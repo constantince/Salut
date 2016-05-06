@@ -1,0 +1,145 @@
+/*reset*/
+html, body {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+body {
+	font-size: 24px;
+	font-family: Helvetica, Arial, sans-serif;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td {
+	margin: 0;
+	padding: 0;
+}
+em, i {
+	font-style: normal;
+}
+body, button, input, select, textarea {
+	font: sans-serif;
+	color: #000;
+}
+html {
+	font-size: 62.5%;
+}
+body {
+	font-size: 1rem;
+	font-family: Helvetica, Arial, sans-serif;
+	-Webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+button, input, select, textarea, label {
+	vertical-align: middle;
+}
+button, input[type=button], input[type=submit] {
+	border: none;
+}
+img {
+	vertical-align: middle;
+	border: none;
+}
+ul, ol {
+	list-style: none;
+}
+a {
+	text-decoration: none;
+	color: #444;
+	vertical-align: baseline;
+	cursor: pointer;
+}
+a:hover, a:visited, a:active {
+	text-decoration: none;
+	color: #444;
+}
+input {
+	outline: 0 none;
+}
+#pageWindow {
+	width: 100%;
+	height: 100%;
+}
+/*#pageWindow > .page {
+	background: #fafafa;
+	font-size: 55%;
+	display: none;
+	position: absolute;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	overflow: scroll;
+}*/
+#pageWindow + .background {
+	background: #000;
+	opacity: 0.3;
+	height: 100%;
+	position: fixed;
+	width: 100%;
+	z-index: 2;
+	top: 0;
+}
+/*为每个按钮按下动作添加效果*/
+#pageWindow .g-page-btn {
+	transition: all 0.2s;
+	-webkit-transition: all 0.2s;
+}
+#pageWindow .g-page-btn:active {
+	opacity: 0.3;
+}
+#pageWindow > .mask {
+	z-index: 6;
+	background: #fafafa;
+	position: absolute;
+	height: 100%;
+	transition: all 0.3s;
+	overflow: hidden;
+	z-index: 10000;
+}
+#pageWindow > .mask[data-direction~="up"] {
+	transform: translate3d(0, 100%, 0);
+	-webkit-transform: translate3d(0, 100%, 0);
+}
+#pageWindow > .mask.move[data-direction~="up"] {
+	transform: translate3d(0, 50%, 0);
+	-webkit-transform: translate3d(0, 50%, 0);
+}
+#pageWindow > .mask[data-direction~="down"] {
+	transform: translate3d(0, -100%, 0);
+	-webkit-transform: translate3d(0, -100%, 0);
+}
+#pageWindow > .mask.move[data-direction~="down"] {
+	transform: translate3d(0, 0, 0);
+	-webkit-transform: translate3d(0, 0, 0);
+}
+#pageWindow > .mask[data-direction~="left"] {
+	transform: translate3d(100%, 0, 0);
+	-webkit-transform: translate3d(100%, 0, 0);
+}
+#pageWindow > .mask.move[data-direction~="left"] {
+	transform: translate3d(20%, 0%, 0);
+	-webkit-transform: translate3d(20%, 0, 0);
+}
+#pageWindow > .mask[data-direction~="right"] {
+	transform: translate3d(-100%, 0, 0);
+	-webkit-transform: translate3d(-100%, 0, 0);
+	width:70%;
+}
+#pageWindow > .mask.move[data-direction~="right"] {
+	transform: translate3d(0%, 0, 0);
+	-webkit-transform: translate3d(0%, 0, 0);
+}
+#pageWindow > .hasnav-header {
+	padding-top: 50px;
+}
+#pageWindow > .hasnav-footer {
+	padding-bottom: 50px;
+}
+#pageWindow  >.fixednav {
+	display: none;
+}
+#pageWindow  > .navigate {
+	z-index: 1000;
+}

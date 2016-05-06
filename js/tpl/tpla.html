@@ -1,0 +1,26 @@
+<!-- A界面 -->
+<script type="text/template" id="tpla">
+	<h1>点击我路由到B界面</h1>
+  <div class="refresh" name="i"></div>
+	<button class="J-refresh">我负责刷新局部界面</button>
+	<button class="J-changeNav">tap me to change Naviagte A to a</button>
+	<button class="J-mask">点击我出现弹出窗口</button>
+	<div class="refresh" name="g"></div>
+</script>
+<!-- A界面的子界面，刷新界面 -->
+<script type="text/template" id="tplg">
+	<h2><%=word%></h2>
+</script>
+
+<!-- A界面的子界面，刷新界面 -->
+<script type="text/template" id="tpli">
+  <h2><%=word%></h2>
+</script>
+
+<script type="text/template" id="tplc">
+	<h1><%=say + name + other%></h1>
+</script>
+<!-- F界面 -->
+<script type="text/template" id="tplf">
+	<h1>i am page F 点击我隐藏</h1>
+</script>

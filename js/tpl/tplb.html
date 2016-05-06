@@ -1,0 +1,28 @@
+<!-- 我的订单 -->
+<script type="text/template" id="tplb">
+	<h1><%=name%></h1>
+	<div class="refresh" name="k"></div>
+	<button type="button" class="mui-btn mui-btn-danger g-page-btn J-refresh-A">我是按钮</button>
+	<div class="refresh" name="h"></div>
+</script>
+
+<!-- B界面的子界面，刷新界面 -->
+<script type="text/template" id="tplh">
+	<h1><%=word%></h1>
+</script>
+
+<!-- B界面的子界面，刷新界面 -->
+<script type="text/template" id="tplk">
+	<h1><%=word%></h1>
+</script>
+
+<script type="text/template" id="tpld">
+	<h1><%=other%></h1>
+	<div type="list" swiper=".swiper-container" class="swiper-container swiper">
+		<ul class="swiper-wrapper myul">
+			<%for(var i=0, l=list.length; i<l; i++){%>
+				<li class="swiper-slide myli"><%=list[i].name%></li>
+			<%}%>
+		</ul>
+	</div>
+</script>
