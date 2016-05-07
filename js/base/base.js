@@ -788,7 +788,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 						//如果该模块有子模块 注册回掉函数，等待子模块建立完成执行回掉
 						var jumpback = function() {
 							callback.call(this);
-							// Backbone.Events.off('jumpback', jumpback);
+							Backbone.Events.off('jumpback', jumpback);
 						}
 						Backbone.Events.once('jumpback', jumpback, exports[newroute]);
 						return;
