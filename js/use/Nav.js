@@ -1,6 +1,6 @@
 define(['base'], function(_PRO_) {
 	//全局依赖变量pdw:创建项目界面模块 e: 公共事件函数 router:路由模块
-	var PDW = _PRO_.PDW, eve = _PRO_.Event, router = _PRO_.Router, _exprots = {};
+	var PDW = _PRO_.PDW, router = _PRO_.Router, _exprots = {};
 	//将视图模块导入缓存中
 	PDW.Observer.add('Nav', function() {
 		return _exprots;
@@ -16,9 +16,9 @@ define(['base'], function(_PRO_) {
 		view: {
 			//渲染界面前的回掉
 			beforeRender: function() {
-				var activePageModule = PDW.getActiveRoute();
-				var info = activePageModule.getOptions().navInfo;
-				this.model.set(info);
+				// var activePageModule = PDW.getActiveRoute();
+				// var info = activePageModule.getOptions().navInfo;
+				// this.model.set(info);
 			},
 			//注册界面事件
 			pageEvent: {

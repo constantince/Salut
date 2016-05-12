@@ -7,6 +7,10 @@ define(function(){
 			B: ['b', 'd', 'h', 'k'],
 			Nav: ['footer', 'header'],
 		},
+		//入口界面,即如果地址栏中没有输入hash 跳入哪个界面
+		entrePage: 'A',
+		//公共文件的名称
+		commonJsModule: 'Nav',
 		//界面切换动画时长 单位毫秒
 		pageTransformDelay: 300,
 		//动画弹出时长

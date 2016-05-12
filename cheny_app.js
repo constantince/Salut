@@ -1,6 +1,7 @@
-var IP = '172.16.0.189';
+// var IP = '172.16.0.189';
 // var IP = '192.168.1.102';
 // var IP = '192.168.31.101';
+var IP = 'localhost';
 require.config({
 	baseUrl: 'js/',
 	urlArgs:'version=1.0',

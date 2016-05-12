@@ -18,13 +18,17 @@ define(['base'], function(_PRO_) {
 		//路由名称 +无需赘述，如果没有配置路由名称，则该界面没有加入路由规则当中去。一般是弹出界面无需配置此项
 		route: 'A',
 		//界面加载需要的数据地址
-		url: 'http://localhost:8800/?way=a',
+		url: 'http://' + IP + ':8800/?way=a',
 		//配置该页面的导航条
 		nav: ['Footer', 'Header'],
 		//本界面导航呈现的数据模型
 		navInfo: {active: 'Home'},
 		//backbone的界面扩展数据
 		view: {
+			//渲染之前的调用函数
+			beforeRender: function() {
+
+			},
 			//渲染界面后的回调函数
 			afterRender: function() {
 				//console.log(this.$el);
@@ -75,7 +79,7 @@ define(['base'], function(_PRO_) {
 		title: 'c界面',
 		//路由名称 +无需赘述，如果没有配置路由名称，则该界面没有加入路由规则当中去。一般是弹出界面无需配置此项
 		route: 'C',
-		url: 'http://localhost:8800/?way=c',
+		url: 'http://' + IP + ':8800/?way=c',
 		view: {
 			pageEvent: {
 				'tap h1->toPage': function(e) {
@@ -104,8 +108,8 @@ define(['base'], function(_PRO_) {
 		//路由名称 +无需赘述，如果没有配置路由名称，则该界面没有加入路由规则当中去。一般是弹出界面无需配置此
 		//声明类型
 		type: 'mask',
-		//申明界面出现动画的方向
-		direction: 'right',
+		//申明界面出现动画的方向 和距离
+		direction: 'right->80',
 		view: {
 			pageEvent: {
 				'tap h1->toPage': function(e) {

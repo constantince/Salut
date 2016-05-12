@@ -50,13 +50,13 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 				var defaults = options;
 				var n = defaults.name;
 				var _callback = function() {
-					_show(n, defaults.type);
+					_show(options);
 					if (defaults.type !== 'normal') return;
 					//每个界面跳转的时候需要告知程序该界面所需的导航
 					if (defaults.nav.length > 0) {
 						var navArr = defaults.nav;
 						$('.navigate').addClass('fixednav');
-							require(['use/Nav'], function(M) {
+							require(['use/' + C.commonJsModule], function(M) {
 								for (var i = 0, l = navArr.length; i < l; i++) {
 									var module = M[navArr[i]];
 									module.show()
@@ -139,6 +139,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 				return model
 			}
 			//如果有需要滑动的 或者类似幻灯片效果元素，启用swiper插件，该配置用法请查看官方文档。
+			/*
 			function _implement(list) {
 				if (list.length > 0) {
 					var type = list.attr('type');
@@ -169,6 +170,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 						})
 				}
 			}
+			*/
 			//扩展backbone View对象 存入对象栈中
 			function _getBackboneView(n, d) {
 				var view;
@@ -176,7 +178,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 						el: '#' + n,
 						initialize: function() {
 							this.render_bak();
-							this.model.bind('change', this.render, this)
+							this.model.bind('change', this.render, this);
 						},
 						render: function(u) {
 							//渲染之前的处理方法
@@ -184,7 +186,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 							this.$el.html(this.template(this.model.toJSON()));
 							//以swiper为标识的容器
 							var list = this.$el.find('div.swiper');
-							_implement(list);
+							// _implement(list);
 							//渲染之后的处理方法
 							this.afterRender && this.afterRender.call(this)
 						},
@@ -255,40 +257,52 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 			function animation(obj) {
 				var defaults = $.extend({}, {
 						el: '',
-						direction: 'left->100%',
+						direction: 'left',
+						distance: 100,
 						callback: function() {},
 						delay: C.pageTransformDelay
-					},
-					obj);
-				var direction = defaults.direction.split('->')[0];
-				var remote = defaults.direction.split('->')[1] || 100;
+					}, obj);
+				var direction = defaults.direction;
+				var distance = defaults.distance;
 				var el = defaults.el;
 				var translate = '';
+				var width = $(window).width(), height = $(window).height();
+
 				switch (direction) {
 					case 'left':
-						el[0].style.cssText = '-webkit-transform: translateX(100%);';
-						translate = 'translateX(-' + remote + ')';
+						// el[0].style.cssText = '-webkit-transform: translate3d(100%, 0, 0);';
+						el.css({'display': 'block', 'transform' : 'translate3d(' + width + 'px, 0, 0)'});
+						translate = 'translate3d('+ ( (100 - distance) * width / 100) + 'px, 0, 0); width:' + distance + '%;';
 						break;
 					case 'right':
-						el[0].style.cssText = '-webkit-transform: translateX(-100%);';
-						translate = 'translateX(' + remote + ')';
+						el.css({'display': 'block', 'transform' : 'translate3d(-' + width + '%, 0, 0)'});
+						translate = 'translate3d(0, 0, 0); width:' + distance + '%;';
 						break;
 					case 'top':
-						el[0].style.cssText = '-webkit-transform: translateY(100%);';
-						translate = 'translateY(-' + remote + ')';
+						// el[0].style.cssText = '-webkit-transform: translate3d(0, 100%, 0);';
+						el.css({'display': 'block', 'transform' : 'translate3d(0, ' + height + 'px, 0);'});
+						translate = 'translate3d(0, '+ ( (100 - distance) * height / 100) + 'px, 0); height:' + distance +  '%';
 						break;
 					case 'bottom':
-						el[0].style.cssText = '-webkit-transform: translateY(-100%);';
-						translate = 'translateY(' + remote + ')';
+						// el[0].style.cssText = '-webkit-transform: translate3d(0, -100%, 0);';
+						el.css({'display': 'block', 'transform' : 'translate3d(0, -' + height + 'px, 0);'});
+						translate = 'translate3d(0, 0, 0); height:' + distance +  '%';
 						break
+				}
+				//关闭界面的时候
+				if(distance == 0) {
+					el.removeClass('page_show');
+					return;
 				}
 				el.addClass('page_show');
 				setTimeout(function() {
-						var css = '-webkit-transition:all ' + defaults.delay/1000 + 's;-webkit-transform: ' + translate + '; z-index:900;';
+						var css = 'z-index:1000; -webkit-transform: ' + translate;
 						el[0].style.cssText = css
 					}, 17);
 				var t = setTimeout(function() {
-						el[0].style.cssText = '';
+						if(obj.type === 'normal') {
+							el[0].style.cssText = '';
+						}
 						defaults.callback.call(null);
 						clearTimeout(t)
 					}, defaults.delay + 50)
@@ -304,7 +318,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 						(o.wrong && o.wrong(r)) || alert(r.data);
 						return
 					} else if (r.status == 3) {
-						Router.myNavigate('Login', 'Login', true)
+						Router.myNavigate('Login', true);
 					} else {
 						tempSuccess && tempSuccess(r)
 					}
@@ -336,9 +350,20 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 					o || {}))
 			}
 			//各个界面的出现顺序和切换效果
-			function _show(n, type) {
+			function _show(options) {
+				//界面名称
+				var n = options.name;
 				//普通类型的界面跳转规则
 				var page = $('#' + n);
+				//界面类型
+				var type = options.type;
+				//选取默认方向
+				var optionDirection = options.direction || '';
+				//界面调整动画方向
+				var direction = optionDirection.split('->')[0];
+				//跳转的距离
+				var distance = (optionDirection.split('->')[1] || '100').replace(/\D/g, '');
+				//判断跳转界面类型 应用不同的样式
 				switch (type) {
 					case 'normal':
 						_addViewOrder(n);
@@ -346,11 +371,12 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 						$('#pageWindow+.background').addClass('g-d-n');
 						$('#pageWindow>.mask').hide().removeClass('move');
 						//界面跳转的方向
-						var direction = _orderChange(n, PDW.getPreView());
+						direction = direction || _orderChange(n, PDW.getPreView());
 						animation({
 							el: page,
-							//界面跳转的方向
-							direction: direction + '->0px',
+							direction: direction,
+							distance: distance,
+							type: type,
 							callback: function() {
 								$('#pageWindow>.page_show').filter(function() {
 									if (this.id != n) $(this).removeClass('page_show')
@@ -361,19 +387,27 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 						//遮罩界面的出现规则
 					case 'mask':
 						//隐藏弹出遮罩层
-						if (page.hasClass('move')) {
-							page.removeClass('move');
+						if (page.hasClass('showed')) {
+							animation({
+								el: page,
+								direction: direction,
+								distance: 0,
+								type: type
+							})
 							setTimeout(function() {
-								page.hide();
+								page.removeClass('showed');
 								$('#pageWindow+.background').removeClass('cover-' + n).addClass('g-d-n').css('z-index', 0);
-							}, C.maskTransformDelay); //config
-							//显示弹出遮罩层
+							}, C.maskTransformDelay); 
+
 						} else {
-							page.show();
-							setTimeout(function() {
-								page.addClass('move');
-								$('#pageWindow+.background').addClass('cover-' + n).removeClass('g-d-n').css('z-index', 1000);
-							}, 50);
+							animation({
+								el: page,
+								direction: direction,
+								distance: distance,
+								type: type
+							})
+							page.addClass('showed');
+							$('#pageWindow+.background').addClass('cover-' + n).removeClass('g-d-n').css('z-index', 1001);
 						}
 						break;
 						//导航固定界面的出现规则
@@ -563,7 +597,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 				//隐藏某个界面 普通界面之间的跳转不用此方法。
 				hide: function() {
 					if (this.options.type === 'mask') {
-						_show(this.options.name, 'mask');
+						_show(this.options);
 					}
 				},
 				//分析并且注册路由
@@ -788,7 +822,6 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 						//如果该模块有子模块 注册回掉函数，等待子模块建立完成执行回掉
 						var jumpback = function() {
 							callback.call(this);
-							Backbone.Events.off('jumpback', jumpback);
 						}
 						Backbone.Events.once('jumpback', jumpback, exports[newroute]);
 						return;
@@ -965,7 +998,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 	var _PRO_ = {
 		PDW: PDW,
 		Router: Router,
-		Event: Event
+		// Event: Event
 	}
 	return _PRO_
 });

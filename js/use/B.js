@@ -10,7 +10,7 @@ define(['base'], function(_PRO_) {
 		//视图名称 * 
 		name: 'b',
 		//本界面的数据 数组下标为参数顺序值 “|”号前面hash值后面传入参数的索引，后面是默认值例如地址栏写入 #B/param1/param2  ==> url 会变成：.....way=param1&aee=param2
-		url: 'http://localhost:8800/?way=[0|b]&aee=[1|c]',
+		url: 'http://' + IP + ':8800/?way=[0|b]&aee=[1|c]',
 		//界面标题 + 无需赘述
 		title: 'b界面',
 		//配置该页面的导航条

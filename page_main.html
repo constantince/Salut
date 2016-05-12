@@ -7,10 +7,14 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <!--全屏模式-->
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <link rel="stylesheet" type="text/css" href="css/base.css">
-    <link rel="stylesheet" type="text/css" href="css/app.css">
+        <script type="text/javascript">
+        var dpr = window.devicePixelRatio;
+        document.querySelectorAll('meta')[0].setAttribute('content', 'initial-scale=' + 1/dpr + ', maximum-scale=' + 1/dpr + ', minimum-scale=' + 1/dpr + ', user-scalable=no');
+    </script>
+    <!-- <link rel="stylesheet" type="text/css" href="css/base.css"> -->
     <link rel="stylesheet" type="text/css" href="css/pdw.css">
-    <link rel="stylesheet" type="text/css" href="css/mui.min.css">
+    <link rel="stylesheet" type="text/css" href="css/app.css">
+    <!-- <link rel="stylesheet" type="text/css" href="css/mui.min.css"> -->
 	<title>Bonjour</title>
 </head>
 <body>
