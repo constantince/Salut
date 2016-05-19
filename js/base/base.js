@@ -184,11 +184,19 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 							//渲染之前的处理方法
 							this.beforeRender && this.beforeRender.call(this);
 							this.$el.html(this.template(this.model.toJSON()));
-							//以swiper为标识的容器
-							var list = this.$el.find('div.swiper');
 							// _implement(list);
 							//渲染之后的处理方法
-							this.afterRender && this.afterRender.call(this)
+					this.afterRender && this.afterRender.call(this);
+					//如果刷新
+					this.createScrollFresh();
+					//如果需要循环横幅框
+				},
+				//下拉刷新
+				createScrollFresh: function() {
+					var el = this.$el;
+					if (el.find('.need-scroll-fresh').length && el.find('.need-scroll-fresh-box').length) {
+						el.find('.need-scroll-fresh').on('scroll', this.scroll);
+					}
 						},
 						template: function(json) {
 							if ($('#tpl' + n).length == 0)
@@ -203,7 +211,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 							}
 							//异步加载模板文件
 							PDW.ajax({
-								url: C.loadHtmlPath + _loadHtml(n) + '.html?version=' + (+new Date()),
+						url: C.loadHtmlPath + _loadHtml(n) + '.html',
 								async: false,
 								headers: {
 									Accept: 'text/html'
@@ -215,7 +223,6 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 									//加载子元素
 									Backbone.Events.trigger(n + '-loadChildElement');
 
-									//console.log(Backbone.Events.)
 									//如果有子元素回调方法则执行之
 									Backbone.Events.trigger('jumpback');
 								}
@@ -275,7 +282,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 						translate = 'translate3d('+ ( (100 - distance) * width / 100) + 'px, 0, 0); width:' + distance + '%;';
 						break;
 					case 'right':
-						el.css({'display': 'block', 'transform' : 'translate3d(-' + width + '%, 0, 0)'});
+						el.css({'display': 'block', 'transform' : 'translate3d(-' + width + 'px, 0, 0)'});
 						translate = 'translate3d(0, 0, 0); width:' + distance + '%;';
 						break;
 					case 'top':
@@ -388,27 +395,21 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 					case 'mask':
 						//隐藏弹出遮罩层
 						if (page.hasClass('showed')) {
-							animation({
-								el: page,
-								direction: direction,
-								distance: 0,
-								type: type
-							})
+							distance = 0;
 							setTimeout(function() {
 								page.removeClass('showed');
 								$('#pageWindow+.background').removeClass('cover-' + n).addClass('g-d-n').css('z-index', 0);
 							}, C.maskTransformDelay); 
-
 						} else {
-							animation({
-								el: page,
-								direction: direction,
-								distance: distance,
-								type: type
-							})
 							page.addClass('showed');
 							$('#pageWindow+.background').addClass('cover-' + n).removeClass('g-d-n').css('z-index', 1001);
 						}
+						animation({
+							el: page,
+							direction: direction,
+							distance: distance,
+							type: type
+						})
 						break;
 						//导航固定界面的出现规则
 					case 'navigate':
@@ -421,7 +422,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 				}
 			}
 			//更具配置过滤hash值
-			function _loadHtml(hash) {
+		function _loadHtml(hash, type) {
 				var config = C.PAGERULES;
 				if (hash.indexOf('/')) {
 					hash = hash.split('/')[0].toLocaleLowerCase()
@@ -430,11 +431,13 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 					if (config[i].indexOf(hash) > -1)
 						hash = i
 				}
+			if(type) {
+				return hash;
+			}
 				return hash.toLocaleLowerCase();
 			}
 			//创建cssloading图标
-			function _createCssLoding(c) {
-			}
+			function _createCssLoding(c) {}
 			//界面加载的顺序，从左到右？从右到左？
 			function _orderChange(n, p) {
 				// var curModule = curModule.callback();
@@ -490,7 +493,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 						pageWinow.append('<' + elName + ' class="mui-bar mui-bar-nav fixednav ' + cls + '" id="' + this.options.name + '"></' + elName + '>'.trim());
 					},
 					mask: function(cls) {
-						pageWinow.append('<div class="mask" id=' + this.options.name + ' data-direction=' + this.options.direction + '></div>'.trim())
+						pageWinow.append('<div class="mask" id=' + this.options.name + '></div>'.trim());
 					},
 					refresh: function() {
 						var options = this.options;
@@ -801,17 +804,18 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 	var Router = new(Backbone.Router.extend({
 		//两个不同大模块之间的跳转 包含此路由的bigmodule 文件名 route 路由名称 callback跳转后的回调函数
 		myNavigate: function(route, callback) {
+			callback = callback || function() {};
 			//过滤提取纯粹的route 不包含参数
 			var newroute = route.replace(/\(.*\)/gi, '').replace(/#/, '').split('\/')[0];
 			//获取模型数据
 			var getModule = PDW.Observer.get(newroute);
 			//如果模块已经载入好
 			if (getModule) {
-				callback && callback.call(getModule);
+				callback.call(getModule);
 				this.navigate(route, true);
 			} else {//异步载入文件
 				var _self = this;
-				var m = require([C.loadJsPath + PDW.filterHash(newroute)], function(exports) {
+				var m = require([C.loadJsPath + PDW.filterHash(newroute, 1)], function(exports) {
 					_self.navigate('#' + route, true);
 					if(callback) {
 						//该路由模块无子模块

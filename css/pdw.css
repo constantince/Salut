@@ -75,7 +75,7 @@ input {
 }*/
 /*公共*/
 #pageWindow >.normal {
-	background-color: #FFFFFF;
+	background-color: #fafafa;
 	font-size: 55%;
 	display: none;
 	position: absolute;
