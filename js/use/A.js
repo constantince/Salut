@@ -12,7 +12,7 @@ define(['base'], function(_PRO_) {
 		//视图名称 * 
 		name: 'a',
 		//界面标题 + 无需赘述
-		title: 'a界面',
+		title: 'A界面',
 		//切换界面时是否刷新本界面
 		applyChange: false,
 		//路由名称 +无需赘述，如果没有配置路由名称，则该界面没有加入路由规则当中去。一般是弹出界面无需配置此项
@@ -22,7 +22,7 @@ define(['base'], function(_PRO_) {
 		//配置该页面的导航条
 		nav: ['Footer', 'Header'],
 		//本界面导航呈现的数据模型
-		navInfo: {active: 'Home'},
+		navInfo: {iconLeft: 'lattice', iconRight: 'me'},
 		//backbone的界面扩展数据
 		view: {
 			//渲染之前的调用函数
@@ -39,26 +39,31 @@ define(['base'], function(_PRO_) {
 				 同样的方法会叠加，如C界面也有toPage，那么执行完C界面的toPage方法之后会 回执行此处方法,
 				 这个前提是tap目标选择器和父级一样，因为子界面在父界面之下，父界面的方法会捕获子界面方法
 				*/
-				'tap h1->toPage': function(e) {
+				'tap .J-async-module->goPageB': function(e) {
 					//A:模块名称 C:路由名称 function.....:回掉函数。this上下文指向B文件中的的B界面对象
 					router.myNavigate('B/b/n', function(){
+
 							// this.children['h'].reloadView({
 							// 	word: 'I AM OTERHS INFOMATION FORM PAGE A'
 							// });
 							// this.children['k'].reloadView({
 							// 	word: 'IT IS WORK'
 							// });
-							this.reloadAllChildren({word:'all reload'});
+							// this.reloadAllChildren({word:'all reload'});
 					});
 				},
 				'tap .J-refresh->refreshPage': refreshPage,
 				'tap .J-changeNav->changeNavA': function() {
-							_exprots.A.children['i'].reloadView({
-								word: '12121212121212'
-							});
+						_exprots.A.children['i'].reloadView({
+							word: '12121212121212'
+						});
 				},
-				'tap .J-mask->showMask': function() {
-					_exprots.F.show();
+				'tap .J-local-module->goPageC': function() {
+					router.myNavigate('C', function() {
+						this.addDataToModel({
+							message: 'hello i am a message from page A'
+						})
+					});
 				}
 			}
 		},
@@ -93,9 +98,7 @@ define(['base'], function(_PRO_) {
 		},
 		model: {
 			defaults: {
-				say: 'hello',
-				name: 'C',
-				other: 'ccccccc'
+				message: 'hello'
 			}
 		}
 	});

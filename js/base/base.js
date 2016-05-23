@@ -13,183 +13,186 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 			BackboneCollection = new Backbone.Collection(),
 			ActiveRoute,
 			pageWinow = $('#pageWindow');
-			function _addViewOrder (n) {
-				viewOrder.push(n)
-			}
 
-			function _addNavPage(n) {
-				if (NavPage.indexOf(n) > -1)
-					return;
-				NavPage.push(n)
-			}
+		function _addViewOrder(n) {
+			viewOrder.push(n)
+		}
 
-			function _getViewOrder(i) {
-				if (i === UDF)
-					return viewOrder;
-				return viewOrder[i];
-			}
+		function _addNavPage(n) {
+			if (NavPage.indexOf(n) > -1)
+				return;
+			NavPage.push(n)
+		}
 
-			function _getPreView() {
-				return viewOrder[viewOrder.length - 2]
-			}
+		function _getViewOrder(i) {
+			if (i === UDF)
+				return viewOrder;
+			return viewOrder[i];
+		}
 
-			//覆盖某个模型的数据 初始对象不能为undefined
-			function _refreshModel(n, d) {
-				BackboneDataOnPage[n] = BackboneDataOnPage[n] || {};
-				return $.extend(BackboneDataOnPage[n], d)
-			}
+		function _getPreView() {
+			return viewOrder[viewOrder.length - 2]
+		}
 
-			//为某个某个模型添加，该模型初始值可以是undefined
-			function _updateModel(n, d) {
-				var cid = BKStorage[n].cid;
-				BackboneCollection.get(cid).set(d)
-			}
-			//更具createpage中的参数创建backbone界面和模型
-			function _loadPage(options) {
-				options = options || {};
-				var defaults = options;
-				var n = defaults.name;
-				var _callback = function() {
+		//覆盖某个模型的数据 初始对象不能为undefined
+		function _refreshModel(n, d) {
+			BackboneDataOnPage[n] = BackboneDataOnPage[n] || {};
+			return $.extend(BackboneDataOnPage[n], d)
+		}
+
+		//为某个某个模型添加，该模型初始值可以是undefined
+		function _updateModel(n, d) {
+			var cid = BKStorage[n].cid;
+			BackboneCollection.get(cid).set(d)
+		}
+		//更具createpage中的参数创建backbone界面和模型
+		function _loadPage(options) {
+			options = options || {};
+			var defaults = options;
+			var n = defaults.name;
+			var _callback = function() {
 					_show(options);
 					if (defaults.type !== 'normal') return;
 					//每个界面跳转的时候需要告知程序该界面所需的导航
 					if (defaults.nav.length > 0) {
 						var navArr = defaults.nav;
 						$('.navigate').addClass('fixednav');
-							require(['use/' + C.commonJsModule], function(M) {
-								for (var i = 0, l = navArr.length; i < l; i++) {
-									var module = M[navArr[i]];
-									module.show()
-								}
-							})
+						require(['use/' + C.commonJsModule], function(M) {
+							for (var i = 0, l = navArr.length; i < l; i++) {
+								var module = M[navArr[i]];
+								module.addDataToModel($.extend({}, module.options.model.defaults, options.navInfo));
+								module.show();
+							}
+						})
 						return
 					} else {
-						$('body > .navigate').addClass('fixednav')
+						$('#pageWindow > .navigate').addClass('fixednav')
 					}
 				}
 				//非初次载入
-				if (!$.isEmptyObject(BackbonePage[n])) {
-					if (defaults.applyChange === false) {
-						_callback();
-						return
-					}
-					if (defaults.url) {
-						_ajax({
-							url: defaults.url,
-							success: function(r) {
-								var _modeldata = _refreshModel(n, r.data);
-								var cid = BKStorage[n].cid;
-								BackboneCollection.get(cid).set(BackboneDataOnPage[n] || {});
-								_callback()
-							},
-							error: function(xhr) {
-								console.error('ajax repsonse wrong:' + xhr)
-							}
-						})
-					} else {
-						var cid = BKStorage[n].cid;
-						var modelData = BackboneDataOnPage[n];
-						if (defaults.applyChange === true) {
-							$.extend(modelData, {
-								timeStr: +new Date()
-							})
-						}
-						BackboneCollection.get(cid).set(modelData || {});
-						_callback()
-					}
-				//初次载入
-				} else {
-					BackbonePage[n] = {};
-					BKStorage[n] = {};
-					BackboneDataOnPage[n] = BackboneDataOnPage[n] || {};
-					if (!defaults.url) {
-						var _modeldata = _refreshModel(n);
-						var _model = new(_getBackboneModel(defaults.model))(_modeldata);
-						BKStorage[n].cid = _model.cid;
-						BackboneCollection.add(_model);
-						BackbonePage[n] = new(_getBackboneView(n, defaults.view))({
-							model: _model
-						});
-						_callback()
-					} else {
-						_ajax({
-							url: defaults.url,
-							success: function(r) {
-								var _modeldata = _refreshModel(n, r.data);
-								var _model = new(_getBackboneModel(defaults.model))(_modeldata);
-								BKStorage[n].cid = _model.cid;
-								BackboneCollection.add(_model);
-								BackbonePage[n] = new(_getBackboneView(n, defaults.view))({
-									model: _model
-								});
-								_callback()
-							},
-							error: function(xhr) {
-								console.error('ajax repsonse wrong:' + xhr)
-							}
-						})
-					}
+			if (!$.isEmptyObject(BackbonePage[n])) {
+				if (defaults.applyChange === false) {
+					_callback();
+					return
 				}
-				return BackbonePage[n]
-			}
-			//扩展backbone模型对象
-			function _getBackboneModel(d) {
-				var defaults = $.extend({}, d);
-				var model = Backbone.Model.extend(defaults);
-				return model
-			}
-			//如果有需要滑动的 或者类似幻灯片效果元素，启用swiper插件，该配置用法请查看官方文档。
-			/*
-			function _implement(list) {
-				if (list.length > 0) {
-					var type = list.attr('type');
-					var cls = list.attr('swiper');
-					require(['core/Swiper'],
-						function(S) {
-							var options;
-							if (type == 'banner') {
-								options = {
-									pagination: '.swiper-pagination',
-									loop: true,
-									grabCursor: true,
-									paginationClickable: true
-								}
-							} else {
-								options = {
-									freeMode: true,
-									slidesPerView: 'auto',
-									freeModeFluid: true,
-									direction: 'vertical',
-								}
-							}
-							var tempSwipeVar = new S(cls, options);
-							setTimeout(function() {
-									tempSwipeVar.update()
-								},
-								100)
-						})
-				}
-			}
-			*/
-			//扩展backbone View对象 存入对象栈中
-			function _getBackboneView(n, d) {
-				var view;
-				var defaults = $.extend({
-						el: '#' + n,
-						initialize: function() {
-							this.render_bak();
-							this.model.bind('change', this.render, this);
+				if (defaults.url) {
+					_ajax({
+						url: defaults.url,
+						success: function(r) {
+							var _modeldata = _refreshModel(n, r.data);
+							var cid = BKStorage[n].cid;
+							BackboneCollection.get(cid).set(BackboneDataOnPage[n] || {});
+							_callback()
 						},
-						render: function(u) {
-							//渲染之前的处理方法
-							this.beforeRender && this.beforeRender.call(this);
-							this.$el.html(this.template(this.model.toJSON()));
-							// _implement(list);
-							//渲染之后的处理方法
+						error: function(xhr) {
+							console.error('ajax repsonse wrong:' + xhr)
+						}
+					})
+				} else {
+					var cid = BKStorage[n].cid;
+					var modelData = BackboneDataOnPage[n];
+					if (defaults.applyChange === true) {
+						$.extend(modelData, {
+							timeStr: +new Date()
+						})
+					}
+					BackboneCollection.get(cid).set(modelData || {});
+					_callback()
+				}
+				//初次载入
+			} else {
+				BackbonePage[n] = {};
+				BKStorage[n] = {};
+				BackboneDataOnPage[n] = BackboneDataOnPage[n] || {};
+				if (!defaults.url) {
+					var _modeldata = _refreshModel(n);
+					var _model = new(_getBackboneModel(defaults.model))(_modeldata);
+					BKStorage[n].cid = _model.cid;
+					BackboneCollection.add(_model);
+					BackbonePage[n] = new(_getBackboneView(n, defaults.view))({
+						model: _model
+					});
+					_callback()
+				} else {
+					_ajax({
+						url: defaults.url,
+						success: function(r) {
+							var _modeldata = _refreshModel(n, r.data);
+							var _model = new(_getBackboneModel(defaults.model))(_modeldata);
+							BKStorage[n].cid = _model.cid;
+							BackboneCollection.add(_model);
+							BackbonePage[n] = new(_getBackboneView(n, defaults.view))({
+								model: _model
+							});
+							_callback()
+						},
+						error: function(xhr) {
+							console.error('ajax repsonse wrong:' + xhr)
+						}
+					})
+				}
+			}
+			return BackbonePage[n]
+		}
+		//扩展backbone模型对象
+		function _getBackboneModel(d) {
+			var defaults = $.extend({}, d);
+			var model = Backbone.Model.extend(defaults);
+			return model
+		}
+		//如果有需要滑动的 或者类似幻灯片效果元素，启用swiper插件，该配置用法请查看官方文档。
+		/*
+		function _implement(list) {
+			if (list.length > 0) {
+				var type = list.attr('type');
+				var cls = list.attr('swiper');
+				require(['core/Swiper'],
+					function(S) {
+						var options;
+						if (type == 'banner') {
+							options = {
+								pagination: '.swiper-pagination',
+								loop: true,
+								grabCursor: true,
+								paginationClickable: true
+							}
+						} else {
+							options = {
+								freeMode: true,
+								slidesPerView: 'auto',
+								freeModeFluid: true,
+								direction: 'vertical',
+							}
+						}
+						var tempSwipeVar = new S(cls, options);
+						setTimeout(function() {
+								tempSwipeVar.update()
+							},
+							100)
+					})
+			}
+		}
+		*/
+		//扩展backbone View对象 存入对象栈中
+		function _getBackboneView(n, d) {
+			var view;
+			var defaults = $.extend({
+				el: '#' + n,
+				initialize: function() {
+					this.render_bak();
+					this.model.bind('change', this.render, this);
+				},
+				render: function(u) {
+					//渲染之前的处理方法
+					this.beforeRender && this.beforeRender.call(this);
+					this.$el.html(this.template(this.model.toJSON()));
+					// _implement(list);
+					//渲染之后的处理方法
 					this.afterRender && this.afterRender.call(this);
 					//如果刷新
 					this.createScrollFresh();
 					//如果需要循环横幅框
+					this.createSlider();
 				},
 				//下拉刷新
 				createScrollFresh: function() {
@@ -197,281 +200,301 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 					if (el.find('.need-scroll-fresh').length && el.find('.need-scroll-fresh-box').length) {
 						el.find('.need-scroll-fresh').on('scroll', this.scroll);
 					}
-						},
-						template: function(json) {
-							if ($('#tpl' + n).length == 0)
-								return;
-							return Backbone.template($('#tpl' + n).html())(json)
-						},
-						render_bak: function() {
-							var _self = this;
-							if ($('#tpl' + n).length != 0) {
-								this.render();
-								return
-							}
-							//异步加载模板文件
-							PDW.ajax({
-						url: C.loadHtmlPath + _loadHtml(n) + '.html',
-								async: false,
-								headers: {
-									Accept: 'text/html'
-								},
-								dataType: 'html',
-								success: function(x) {
-									$('body').append(x);
-									_self.render();
-									//加载子元素
-									Backbone.Events.trigger(n + '-loadChildElement');
-
-									//如果有子元素回调方法则执行之
-									Backbone.Events.trigger('jumpback');
-								}
-							})
-						}
-					}, d);
-				view = Backbone.View.extend(defaults);
-				return view
-			}
-			//删除某个扩展类，很少用到。内存占用到你绝得可以删除的时候调用此方法即可
-			function _deleteClass(books) {
-				[].slice($.inArray(n, BKStorage), 1)
-			}
-			function _setData(n, d) {
-				BKData[n] = BKData[n] || {};
-				if (d.url) {
-					BKData[n].changed = !!(BKData[n].url != d.url);
-					BKData[n].url = d.url;
-					return BKData[n].datas
-				}
-				BKData[n].datas = d;
-				BKData[n].changed = true;
-				return BKData[n]
-			}
-			function _getData(n) {
-				return BKData[n] || {}
-			}
-			//获取地址栏中的地址
-			function getParams(name) {
-				var spa = location.search.replace(/^\?/, '').split('&');
-				var r;
-				for (var i = 0, l = spa.length; i < l; i++) {
-					var temp = spa[i].split('=');
-					if (name === temp[0]) r = temp[1]
-				}
-				return r
-			}
-			//界面跳转的动画函数
-			function animation(obj) {
-				var defaults = $.extend({}, {
-						el: '',
-						direction: 'left',
-						distance: 100,
-						callback: function() {},
-						delay: C.pageTransformDelay
-					}, obj);
-				var direction = defaults.direction;
-				var distance = defaults.distance;
-				var el = defaults.el;
-				var translate = '';
-				var width = $(window).width(), height = $(window).height();
-
-				switch (direction) {
-					case 'left':
-						// el[0].style.cssText = '-webkit-transform: translate3d(100%, 0, 0);';
-						el.css({'display': 'block', 'transform' : 'translate3d(' + width + 'px, 0, 0)'});
-						translate = 'translate3d('+ ( (100 - distance) * width / 100) + 'px, 0, 0); width:' + distance + '%;';
-						break;
-					case 'right':
-						el.css({'display': 'block', 'transform' : 'translate3d(-' + width + 'px, 0, 0)'});
-						translate = 'translate3d(0, 0, 0); width:' + distance + '%;';
-						break;
-					case 'top':
-						// el[0].style.cssText = '-webkit-transform: translate3d(0, 100%, 0);';
-						el.css({'display': 'block', 'transform' : 'translate3d(0, ' + height + 'px, 0);'});
-						translate = 'translate3d(0, '+ ( (100 - distance) * height / 100) + 'px, 0); height:' + distance +  '%';
-						break;
-					case 'bottom':
-						// el[0].style.cssText = '-webkit-transform: translate3d(0, -100%, 0);';
-						el.css({'display': 'block', 'transform' : 'translate3d(0, -' + height + 'px, 0);'});
-						translate = 'translate3d(0, 0, 0); height:' + distance +  '%';
-						break
-				}
-				//关闭界面的时候
-				if(distance == 0) {
-					el.removeClass('page_show');
-					return;
-				}
-				el.addClass('page_show');
-				setTimeout(function() {
-						var css = 'z-index:1000; -webkit-transform: ' + translate;
-						el[0].style.cssText = css
-					}, 17);
-				var t = setTimeout(function() {
-						if(obj.type === 'normal') {
-							el[0].style.cssText = '';
-						}
-						defaults.callback.call(null);
-						clearTimeout(t)
-					}, defaults.delay + 50)
-			}
-			//自定义封装的ajax方法
-			function _ajax(o) {
-				if (typeof o.url === 'undefined') {
-					return alert('请输入请求地址！')
-				}
-				var tempSuccess = o.success;
-				o.success = function(r) {
-					if (r.status == 0) {
-						(o.wrong && o.wrong(r)) || alert(r.data);
-						return
-					} else if (r.status == 3) {
-						Router.myNavigate('Login', true);
-					} else {
-						tempSuccess && tempSuccess(r)
+				},
+				createSlider: function() {
+					if(this.$el.find('.salut-warper').length) {
+						scroll('.salut-warper');
 					}
-				}
-				var tempComplete = o.complete;
-				o.complete = function(r) {
-					tempComplete !== UDF && tempComplete.call(null, r);
-					o.modal === undefined && PB.toast({
-						message: 'loading...',
-						status: 'end'
-					});
-				}
-				$.ajax($.extend({
-						url: '',
-						type: 'GET',
-						dataType: 'json',
-						beforeSend: function() {
-							o.modal === undefined && PB.toast({
-								message: 'loading...',
-								delay: C.ajaxDelay
-							});
+				},
+				template: function(json) {
+					if ($('#tpl' + n).length == 0)
+						return;
+					return Backbone.template($('#tpl' + n).html())(json)
+				},
+				render_bak: function() {
+					var _self = this;
+					if ($('#tpl' + n).length != 0) {
+						this.render();
+						return
+					}
+					//异步加载模板文件
+					$.ajax({
+						url: C.loadHtmlPath + _loadHtml(n) + '.html',
+						async: false,
+						headers: {
+							Accept: 'text/html'
 						},
-						error: function(XMLHttpRequest, textStatus, errorThrown) {
-							PB.tip({
-								tipTxt: '网络连接失败，错误状态码:' + XMLHttpRequest.status
+						dataType: 'html',
+						success: function(x) {
+							$('body').append(x);
+							_self.render();
+							//加载子元素
+							Backbone.Events.trigger(n + '-loadChildElement');
+
+							//如果有子元素回调方法则执行之
+							Backbone.Events.trigger('jumpback');
+						}
+					})
+				}
+			}, d);
+			view = Backbone.View.extend(defaults);
+			return view
+		}
+		//删除某个扩展类，很少用到。内存占用到你绝得可以删除的时候调用此方法即可
+		function _deleteClass(books) {
+			[].slice($.inArray(n, BKStorage), 1)
+		}
+
+		function _setData(n, d) {
+			BKData[n] = BKData[n] || {};
+			if (d.url) {
+				BKData[n].changed = !!(BKData[n].url != d.url);
+				BKData[n].url = d.url;
+				return BKData[n].datas
+			}
+			BKData[n].datas = d;
+			BKData[n].changed = true;
+			return BKData[n]
+		}
+
+		function _getData(n) {
+			return BKData[n] || {}
+		}
+		//获取地址栏中的地址
+		function getParams(name) {
+			var spa = location.search.replace(/^\?/, '').split('&');
+			var r;
+			for (var i = 0, l = spa.length; i < l; i++) {
+				var temp = spa[i].split('=');
+				if (name === temp[0]) r = temp[1]
+			}
+			return r
+		}
+		//界面跳转的动画函数
+		function animation(obj) {
+			var defaults = $.extend({}, {
+				el: '',
+				direction: 'left',
+				distance: 100,
+				callback: function() {},
+				delay: C.pageTransformDelay
+			}, obj);
+			var direction = defaults.direction;
+			var distance = defaults.distance;
+			var el = defaults.el;
+			var translate = '';
+			var width = $(window).width(),
+				height = $(window).height();
+
+			switch (direction) {
+				case 'left':
+					// el[0].style.cssText = '-webkit-transform: translate3d(100%, 0, 0);';
+					el.css({
+						'display': 'block',
+						'transform': 'translate3d(' + width + 'px, 0, 0)'
+					});
+					translate = 'translate3d(' + ((100 - distance) * width / 100) + 'px, 0, 0); width:' + distance + '%;';
+					break;
+				case 'right':
+					el.css({
+						'display': 'block',
+						'transform': 'translate3d(-' + width + 'px, 0, 0)'
+					});
+					translate = 'translate3d(0, 0, 0); width:' + distance + '%;';
+					break;
+				case 'top':
+					// el[0].style.cssText = '-webkit-transform: translate3d(0, 100%, 0);';
+					el.css({
+						'display': 'block',
+						'transform': 'translate3d(0, ' + height + 'px, 0);'
+					});
+					translate = 'translate3d(0, ' + ((100 - distance) * height / 100) + 'px, 0); height:' + distance + '%';
+					break;
+				case 'bottom':
+					// el[0].style.cssText = '-webkit-transform: translate3d(0, -100%, 0);';
+					el.css({
+						'display': 'block',
+						'transform': 'translate3d(0, -' + height + 'px, 0);'
+					});
+					translate = 'translate3d(0, 0, 0); height:' + distance + '%';
+					break
+			}
+			//关闭界面的时候
+			if (distance == 0) {
+				el.removeClass('page_show');
+				return;
+			}
+			el.addClass('page_show');
+			setTimeout(function() {
+				var css = 'z-index:1000; -webkit-transform: ' + translate;
+				el[0].style.cssText = css
+			}, 17);
+			var t = setTimeout(function() {
+				if (obj.type === 'normal') {
+					el[0].style.cssText = '';
+				}
+				defaults.callback.call(null);
+				clearTimeout(t)
+			}, defaults.delay + 50)
+		}
+		//自定义封装的ajax方法
+		function _ajax(o) {
+			if (typeof o.url === 'undefined') {
+				return alert('请输入请求地址！')
+			}
+			var tempSuccess = o.success;
+			o.success = function(r) {
+				if (r.status == 0) {
+					(o.wrong && o.wrong(r)) || alert(r.data);
+					return
+				} else if (r.status == 3) {
+					Router.myNavigate('Login', true);
+				} else {
+					tempSuccess && tempSuccess(r)
+				}
+			}
+			var tempComplete = o.complete;
+			o.complete = function(r) {
+				tempComplete !== UDF && tempComplete.call(null, r);
+				o.modal === undefined && PB.toast({
+					message: 'loading...',
+					status: 'end'
+				});
+			}
+			$.ajax($.extend({
+					url: '',
+					type: 'GET',
+					dataType: 'json',
+					beforeSend: function() {
+						o.modal === undefined && PB.toast({
+							message: 'loading...',
+							delay: C.ajaxDelay
+						});
+					},
+					error: function(XMLHttpRequest, textStatus, errorThrown) {
+						PB.tip({
+							tipTxt: '网络连接失败，错误状态码:' + XMLHttpRequest.status
+						})
+					}
+				},
+				o || {}))
+		}
+		//各个界面的出现顺序和切换效果
+		function _show(options) {
+			//界面名称
+			var n = options.name;
+			//普通类型的界面跳转规则
+			var page = $('#' + n);
+			//界面类型
+			var type = options.type;
+			//选取默认方向
+			var optionDirection = options.direction || '';
+			//界面调整动画方向
+			var direction = optionDirection.split('->')[0];
+			//跳转的距离
+			var distance = (optionDirection.split('->')[1] || '100').replace(/\D/g, '');
+			//判断跳转界面类型 应用不同的样式
+			switch (type) {
+				case 'normal':
+					_addViewOrder(n);
+					ActiveRoute = n;
+					$('#pageWindow+.background').addClass('g-d-n');
+					$('#pageWindow>.mask').hide().removeClass('move');
+					//界面跳转的方向
+					direction = direction || _orderChange(n, PDW.getPreView());
+					animation({
+						el: page,
+						direction: direction,
+						distance: distance,
+						type: type,
+						callback: function() {
+							$('#pageWindow>.page_show').filter(function() {
+								if (this.id != n) $(this).removeClass('page_show')
 							})
 						}
-					},
-					o || {}))
+					})
+					break;
+					//遮罩界面的出现规则
+				case 'mask':
+					//隐藏弹出遮罩层
+					if (page.hasClass('showed')) {
+						distance = 0;
+						setTimeout(function() {
+							page.removeClass('showed');
+							$('#pageWindow+.background').removeClass('cover-' + n).addClass('g-d-n').css('z-index', 0);
+						}, C.maskTransformDelay);
+					} else {
+						page.addClass('showed');
+						$('#pageWindow+.background').addClass('cover-' + n).removeClass('g-d-n').css('z-index', 1001);
+					}
+					animation({
+						el: page,
+						direction: direction,
+						distance: distance,
+						type: type
+					})
+					break;
+					//导航固定界面的出现规则
+				case 'navigate':
+					$('#' + n).removeClass('fixednav');
+					break;
+					//其他界面出现规则
+				default:
+					//console.log('default............');
+					break;
 			}
-			//各个界面的出现顺序和切换效果
-			function _show(options) {
-				//界面名称
-				var n = options.name;
-				//普通类型的界面跳转规则
-				var page = $('#' + n);
-				//界面类型
-				var type = options.type;
-				//选取默认方向
-				var optionDirection = options.direction || '';
-				//界面调整动画方向
-				var direction = optionDirection.split('->')[0];
-				//跳转的距离
-				var distance = (optionDirection.split('->')[1] || '100').replace(/\D/g, '');
-				//判断跳转界面类型 应用不同的样式
-				switch (type) {
-					case 'normal':
-						_addViewOrder(n);
-						ActiveRoute = n;
-						$('#pageWindow+.background').addClass('g-d-n');
-						$('#pageWindow>.mask').hide().removeClass('move');
-						//界面跳转的方向
-						direction = direction || _orderChange(n, PDW.getPreView());
-						animation({
-							el: page,
-							direction: direction,
-							distance: distance,
-							type: type,
-							callback: function() {
-								$('#pageWindow>.page_show').filter(function() {
-									if (this.id != n) $(this).removeClass('page_show')
-								})
-							}
-						})
-						break;
-						//遮罩界面的出现规则
-					case 'mask':
-						//隐藏弹出遮罩层
-						if (page.hasClass('showed')) {
-							distance = 0;
-							setTimeout(function() {
-								page.removeClass('showed');
-								$('#pageWindow+.background').removeClass('cover-' + n).addClass('g-d-n').css('z-index', 0);
-							}, C.maskTransformDelay); 
-						} else {
-							page.addClass('showed');
-							$('#pageWindow+.background').addClass('cover-' + n).removeClass('g-d-n').css('z-index', 1001);
-						}
-						animation({
-							el: page,
-							direction: direction,
-							distance: distance,
-							type: type
-						})
-						break;
-						//导航固定界面的出现规则
-					case 'navigate':
-						$('#' + n).removeClass('fixednav');
-						break;
-						//其他界面出现规则
-					default:
-						//console.log('default............');
-						break;
-				}
-			}
-			//更具配置过滤hash值
+		}
+		//更具配置过滤hash值
 		function _loadHtml(hash, type) {
-				var config = C.PAGERULES;
-				if (hash.indexOf('/')) {
-					hash = hash.split('/')[0].toLocaleLowerCase()
-				}
-				for (var i in config) {
-					if (config[i].indexOf(hash) > -1)
-						hash = i
-				}
-			if(type) {
+			var config = C.PAGERULES;
+			if (hash.indexOf('/')) {
+				hash = hash.split('/')[0].toLocaleLowerCase()
+			}
+			for (var i in config) {
+				if (config[i].indexOf(hash) > -1)
+					hash = i
+			}
+			if (type) {
 				return hash;
 			}
-				return hash.toLocaleLowerCase();
+			return hash.toLocaleLowerCase();
+		}
+		//创建cssloading图标
+		function _createCssLoding(c) {}
+		//界面加载的顺序，从左到右？从右到左？
+		function _orderChange(n, p) {
+			// var curModule = curModule.callback();
+			var go = 'left';
+			if (_getActiveRoute(n).options.order < _getActiveRoute(p).options.order) {
+				go = 'right';
 			}
-			//创建cssloading图标
-			function _createCssLoding(c) {}
-			//界面加载的顺序，从左到右？从右到左？
-			function _orderChange(n, p) {
-				// var curModule = curModule.callback();
-				var go = 'left';
-				if (_getActiveRoute(n).options.order < _getActiveRoute(p).options.order) {
-					go = 'right';
-				}
-				return go
+			return go
+		}
+		//获得某个界面的模型 
+		function _getModule(n) {
+			return _observer.get(n)
+		}
+		//获取当前路由地址 
+		function _getActiveRoute(p) {
+			return _observer.get(p || ActiveRoute)
+		}
+		//获取当前执行脚本文件名
+		function _currentScript() {
+			if (document.currentScript) {
+				return document.currentScript.src;
 			}
-			//获得某个界面的模型 
-			function _getModule(n) {
-				return _observer.get(n)
+			var a = {},
+				stack;
+			try {
+				a.b();
+			} catch (e) {
+				stack = e.stack || e.sourceURL || e.stacktrace;
 			}
-			//获取当前路由地址 
-			function _getActiveRoute(p) {
-				return _observer.get(p || ActiveRoute)
-			}
-			//获取当前执行脚本文件名
-			function _currentScript(){
-				if(document.currentScript) {
-					return document.currentScript.src;
-				}
-		    var a = {}, stack;
-		    try{
-		      a.b();
-		    }
-		    catch(e){
-		      stack = e.stack || e.sourceURL || e.stacktrace; 
-		    }
-		    var rExtractUri = /(?:http|https|file):\/\/.*?\/.+?.js/, 
-		        absPath = rExtractUri.exec(stack);
-		    return absPath[0] || '';
-			}
-			var _baseClass = {
+			var rExtractUri = /(?:http|https|file):\/\/.*?\/.+?.js/,
+				absPath = rExtractUri.exec(stack);
+			return absPath[0] || '';
+		}
+		var _baseClass = {
 				_init: function(obj) {
 					this.options = $.extend({
 						name: 'pageNull',
@@ -507,11 +530,11 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 						//由于主界面未渲染，因此容器不存在，再次注册方法 为渲染后界面所用
 						Backbone.Events.once(parent + '-loadChildElement', function() {
 							//将子元素的html内容添加到父容器中去
-							$('#' + parent).find('div.refresh[name~="'+name+'"]').html('<div class="refresh-' + name + '"></div>'.trim())
-							  //建立backbone界面和数据模型。---任何非normal的界面，没有router配置项 无法调用loadpage渲染，必须手动调用
-								_loadPage(options);
-								//上一步骤建立了数据模块后绑定子模块
-								this._bindChildren(parentClass);
+							$('#' + parent).find('div.refresh[name~="' + name + '"]').html('<div class="refresh-' + name + '"></div>'.trim())
+								//建立backbone界面和数据模型。---任何非normal的界面，没有router配置项 无法调用loadpage渲染，必须手动调用
+							_loadPage(options);
+							//上一步骤建立了数据模块后绑定子模块
+							this._bindChildren(parentClass);
 						}, this);
 					},
 					normal: function(cls) {
@@ -561,7 +584,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 					var backboneView = this.options.view;
 					//对注册事件的格式进行切割过滤等处理
 					for (var e in myEvents) {
-						if(!myEvents.hasOwnProperty(e)) continue;
+						if (!myEvents.hasOwnProperty(e)) continue;
 						var eventArr = e.split('->');
 						var eventName = eventArr[0].replace(/^\s+|\s+$/gi, '');
 						var eventFun = eventArr[1].replace(/^\s+|\s+$/gi, '');
@@ -573,20 +596,20 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 				//刷新界面（非reload重载，只做数据刷新）
 				reloadView: function(d) {
 					//如果是动态数据载入则再次刷新url
-					if(this.options.url) {
+					if (this.options.url) {
 						_loadPage(this.options, d);
-					//静态数据直接给模型赋值
-					}else{
+						//静态数据直接给模型赋值
+					} else {
 						_updateModel(this.options.name, d);
 					}
-					
+
 				},
 				//一次性刷新所有子界面
 				reloadAllChildren: function(d) {
 					var children = this.children;
-					for(var i in children) {
-							children[i].reloadView(d);
-						}
+					for (var i in children) {
+						children[i].reloadView(d);
+					}
 				},
 				//路由跳转时传入下个界面模型数据 d：数据对象 object
 				addDataToModel: function(d) {
@@ -606,7 +629,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 				//分析并且注册路由
 				_normal: function(p) {
 					var defaults = this.options;
-					var s = (defaults.models || function() {} )() || {};
+					var s = (defaults.models || function() {})() || {};
 					if (defaults.url) {
 						url = (typeof defaults.url === 'function') ? defaults.url() : defaults.url;
 						var u = url.replace(/\[[^\]]*\]/g, function(result) {
@@ -614,20 +637,22 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 							//再次挑出特殊符号
 							result = result.replace(/\[|\]/g, '');
 							//如果配置有默认值
-							if(result.indexOf('|') > -1) {
+							if (result.indexOf('|') > -1) {
 								//分隔符取值
 								var res = result.split('|');
 								//如果没有传入参数或者参数为空 则取默认值 ([0|default])
 								var index = +res[0];
 								returnValue = p[index] || res[1];
-							}else{
+							} else {
 								//获得传入的参数
 								returnValue = p[result] || '';
 							}
 							return returnValue;
 						});
 						u = u || url;
-						s = { url: u }
+						s = {
+							url: u
+						}
 					}
 					_loadPage($.extend({}, this.options, s));
 				},
@@ -644,29 +669,78 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 				},
 				//手动改变hash值时触发的函数
 				_Route: function() {
-						this.title && PB.setPageTitle(this.title);
-						this._normal([].slice.call(arguments, 0));
+					this.title && PB.setPageTitle(this.title);
+					this._normal([].slice.call(arguments, 0));
 				}
 			}
 			//创建一个界面的类
-			function _Class(obj) {
-				obj = obj || {};
-				var F = function() {
-					var func = Backbone.truss(this._Route, this);
-					this._init.call(this, obj);
-					obj.route && Router.route(obj.route, this.n, func)
-				};
-				$.extend(F.prototype, _baseClass, obj.fn || {});
-				var page = new F();
-				//添加实例到内存中
-				return _observer.add(obj.name, page);
+		function _Class(obj) {
+			obj = obj || {};
+			var F = function() {
+				var func = Backbone.truss(this._Route, this);
+				this._init.call(this, obj);
+				obj.route && Router.route(obj.route, this.n, func)
 			};
+			$.extend(F.prototype, _baseClass, obj.fn || {});
+			var page = new F();
+			//添加实例到内存中
+			return _observer.add(obj.name, page);
+		};
+		//banner栏的滑动效果
+		function scroll(fatherSelector) {
+			var father = $(fatherSelector),
+				children = father.children();
+			children.first().addClass('active');
+			children.last().addClass('prev');
+			//判断正在激活的元素
+			function _judeElement(current, direction) {
+				var len = children.length - 1;
+				var index = current.index();
+				var fn = {
+					left: function() {
+						return (index == len ? children.first() : current.next());
+					},
+					right: function() {
+						return (index == 0 ? children.last() : current.prev());
+					}
+				};
+				return fn[direction]();
+			}
+			//判断下一个激活的元素
+			function loadBrother(active, direction) {
+				var u = active;
+				if (direction === 'right') {
+					var current = _judeElement(active, 'right');
+					u = current.index() === 0 ? children.last() : current.prev();
+				}
+				return u;
+			}
+			// 执行动画
+			function move(target, direction) {
+				var current = _judeElement(target, direction);
+				children.removeClass('prev').removeClass('active');
+				current.addClass('active');
+				loadBrother(target, direction).addClass('prev');
+			}
+
+			//开始侦听事件
+			children.on('swipeLeft', function(e) {
+				move($(e.currentTarget), 'left');
+			}).on('swipeRight', function(e) {
+				move($(e.currentTarget), 'right');
+			});
+
+			return move;
+		}
 		//观察和收集每个界面的实例
 		var _observer = (function() {
 			var obser = [];
 			//向内存中添加界面模块 name:模块名 page:界面
 			function add(name, page) {
-				obser.push({ name: name, page: page });
+				obser.push({
+					name: name,
+					page: page
+				});
 				return page;
 			}
 			//从内存中获取模块 name:模块名称
@@ -690,7 +764,6 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 				list: get
 			}
 		})();
-
 		//策略算法验证
 		var _verifly = function(option) {
 			var reg = $.extend({
@@ -813,13 +886,13 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 			if (getModule) {
 				callback.call(getModule);
 				this.navigate(route, true);
-			} else {//异步载入文件
+			} else { //异步载入文件
 				var _self = this;
 				var m = require([C.loadJsPath + PDW.filterHash(newroute, 1)], function(exports) {
 					_self.navigate('#' + route, true);
-					if(callback) {
+					if (callback) {
 						//该路由模块无子模块
-						if(!exports[newroute].children) {
+						if (!exports[newroute].children) {
 							callback.call(exports[newroute]);
 							return;
 						}
@@ -830,7 +903,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 						Backbone.Events.once('jumpback', jumpback, exports[newroute]);
 						return;
 					}
-					
+
 				})
 			}
 		}
@@ -898,35 +971,35 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 				})
 		}
 		exports.tip = function(options) {
-			if ($('.J-tip').attr('showed') == '1')
-				return;
-			$('.J-tip').attr('showed', '1');
-			var paramObj = {
-				tipTxt: "this is tip text!!",
-				delay: 2000,
-				callBack: function() {},
-				callBackPram: ""
-			};
-			$.extend(paramObj, options || {});
-			$(".J-tip").find(".J-tipWp").html(paramObj.tipTxt);
-			setTimeout(function() {
-					var t = 0 - $(".J-tip").height() / 2;
-					$(".J-tip").find(".J-tipWp").css({
-						top: t
-					});
-					$(".J-tip").addClass("_tipBx-show")
-				},
-				100);
-			setTimeout(function() {
-					$(".J-tip").removeClass("_tipBx-show");
-					$('.J-tip').attr('showed', '0');
-					if (paramObj.callBack && typeof(paramObj.callBack) == "function") {
-						paramObj.callBack(paramObj.callBackPram)
-					}
-				},
-				paramObj.delay)
-		}
-		//插件，toast提示
+				if ($('.J-tip').attr('showed') == '1')
+					return;
+				$('.J-tip').attr('showed', '1');
+				var paramObj = {
+					tipTxt: "this is tip text!!",
+					delay: 2000,
+					callBack: function() {},
+					callBackPram: ""
+				};
+				$.extend(paramObj, options || {});
+				$(".J-tip").find(".J-tipWp").html(paramObj.tipTxt);
+				setTimeout(function() {
+						var t = 0 - $(".J-tip").height() / 2;
+						$(".J-tip").find(".J-tipWp").css({
+							top: t
+						});
+						$(".J-tip").addClass("_tipBx-show")
+					},
+					100);
+				setTimeout(function() {
+						$(".J-tip").removeClass("_tipBx-show");
+						$('.J-tip').attr('showed', '0');
+						if (paramObj.callBack && typeof(paramObj.callBack) == "function") {
+							paramObj.callBack(paramObj.callBackPram)
+						}
+					},
+					paramObj.delay)
+			}
+			//插件，toast提示
 		exports.toast = function(opt) {
 			//强行停止加载toast
 			if (opt.status === 'end') {
@@ -978,8 +1051,8 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 					default:
 						return "class='status_ct'"
 				}
-		}
-		//输出当前时间
+			}
+			//输出当前时间
 		exports.now = function() {
 			function add0(e) {
 				if (e < 10) {

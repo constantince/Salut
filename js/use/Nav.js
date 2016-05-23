@@ -65,15 +65,31 @@ define(['base'], function(_PRO_) {
 			},
 			//注册界面事件
 			pageEvent: {
-				'tap a->back': function(e) {
-					window.history.go(-1);
+				//回退图标
+				'tap a.icon-back->back': function() {
+					window.history.go(-1)
+				},
+				//登录图标
+				'tap a.icon-login->login': function() {
+
+				},
+				//栅格图标
+				'tap a.icon-lattice->slideLeft': function() {
+					//显示左侧框
+					PDW.Observer.get('f').show();
+				},
+				//分享图标
+				'tap a.icon-share->share': function() {
+
 				}
 			}
 		},
-		//界面默认的数据
+		//顶部导航的默认数据
 		model: {
 			defaults: {
-				name: '首页'
+				name: '首页',
+				iconLeft: 'back',
+				iconRight: ''
 			}
 		}
 	});

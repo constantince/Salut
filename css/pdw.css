@@ -46,6 +46,15 @@ img {
 ul, ol {
 	list-style: none;
 }
+p.sault-description {
+	font-size: 14px;
+	margin-top: 12px;
+	padding: 10px 10px;
+	background-color: #FFF;
+	font-weight: bold;
+	line-height: 20px;
+	color: #614B4B;
+}
 a {
 	text-decoration: none;
 	color: #444;
@@ -63,25 +72,45 @@ input {
 	width: 100%;
 	height: 100%;
 }
-/*#pageWindow > .page {
-	background: #fafafa;
-	font-size: 55%;
-	display: none;
-	position: absolute;
-	left: 0px;
-	width: 100%;
-	height: 100%;
-	overflow: scroll;
-}*/
+
 /*公共*/
 #pageWindow >.normal {
 	background-color: #fafafa;
 	font-size: 55%;
 	display: none;
 	position: absolute;
-	box-shadow: 0 0 12px rgba(0,0,0,0.2);
+	box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
 	width: 100%;
 	height: 100%;
+}
+#header a {
+	display: block;
+	height: inherit;
+	width: 30px;
+}
+#pageWindow  >.navigate.fixednav {
+	display: none;
+}
+#header h1 {
+	-webkit-box-flex: 1;
+}
+#header a.icon-share {
+	background: url(../img/nav.png) -155px 14px/ 265px 22px no-repeat;
+}
+#header a.icon-clock {
+	background: url(../img/nav.png) -74px 14px/ 265px 22px no-repeat;
+}
+#header a.icon-point {
+	background: url(../img/nav.png) -44px 14px/ 265px 22px no-repeat;
+}
+#header a.icon-me {
+	background: url(../img/nav.png) -24px 14px/ 265px 22px no-repeat;
+}
+#header a.icon-back {
+	background: url(../img/nav.png) -102px 14px/ 265px 22px no-repeat;
+}
+#header a.icon-lattice {
+	background: url(../img/nav.png) 4px 14px/ 265px 22px no-repeat;
 }
 #pageWindow + .background {
 	background: #000;
@@ -95,9 +124,10 @@ input {
 #pageWindow > .normal.page_show {
 	display: block;
 }
-#pageWindow > .navigate_show{
+#pageWindow > .navigate_show {
 	display: block;
 }
+
 /*为每个按钮按下动作添加效果*/
 #pageWindow .g-page-btn {
 	transition: all 0.2s;
@@ -117,41 +147,6 @@ input {
 	overflow: hidden;
 	z-index: 10000 !important;
 }
-/*
-#pageWindow > .mask[data-direction~="up"] {
-	transform: translate3d(0, 100%, 0);
-	-webkit-transform: translate3d(0, 100%, 0);
-}
-#pageWindow > .mask.move[data-direction~="up"] {
-	transform: translate3d(0, 50%, 0);
-	-webkit-transform: translate3d(0, 50%, 0);
-}
-#pageWindow > .mask[data-direction~="down"] {
-	transform: translate3d(0, -100%, 0);
-	-webkit-transform: translate3d(0, -100%, 0);
-}
-#pageWindow > .mask.move[data-direction~="down"] {
-	transform: translate3d(0, 0, 0);
-	-webkit-transform: translate3d(0, 0, 0);
-}
-#pageWindow > .mask[data-direction~="left"] {
-	transform: translate3d(100%, 0, 0);
-	-webkit-transform: translate3d(100%, 0, 0);
-}
-#pageWindow > .mask.move[data-direction~="left"] {
-	transform: translate3d(20%, 0%, 0);
-	-webkit-transform: translate3d(20%, 0, 0);
-}
-#pageWindow > .mask[data-direction~="right"] {
-	transform: translate3d(-100%, 0, 0);
-	-webkit-transform: translate3d(-100%, 0, 0);
-	width:70%;
-}
-#pageWindow > .mask.move[data-direction~="right"] {
-	transform: translate3d(0%, 0, 0);
-	-webkit-transform: translate3d(0%, 0, 0);
-}
-*/
 #pageWindow > div {
 	transition: all 0.3s;
 }
@@ -166,19 +161,21 @@ input {
 }
 #pageWindow > .navigate {
 	position: fixed;
-  width: 100%;
-  z-index: 1010;
+	width: 100%;
+	z-index: 1010;
 }
 #pageWindow > footer.navigate {
-	top:initial;
-	bottom:0px;
+	top: initial;
+	bottom: 0px;
 	height: 50px;
 }
 #pageWindow > header.navigate {
-	top:0;
-	bottom:0px;
+	top: 0;
+	bottom: 0px;
 	height: 50px;
+	display: -webkit-box;
 }
+
 /*解决N行文本溢出打点显示的问题，暂只支持webkit内核*/
 .g-ellipsis-3 {
 	overflow: hidden;
@@ -202,4 +199,41 @@ input {
 }
 .g-d-n {
 	display: none;
+}
+.salut-banner {
+	width: 100%;
+	height: 200px;
+	overflow: hidden;
+}
+.salut-warper {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	height: inherit;
+	width: inherit;
+	transition: all 0.3s;
+	position: relative;
+}
+.salut-warper li {
+	height: 200px;
+	width: 100%;
+	position: absolute;
+	line-height: 200px;
+	text-align: center;
+	font-size: 45px;
+	color: #FFF;
+	background-color: #19a369;
+	transition: all 0.3s;
+	-webkit-transition: all 0.3s;
+	transform: translate3d(100%, 0, 0);
+	-webkit-transform: translate3d(100%, 0, 0);
+}
+.salut-warper li.active {
+	-webkit-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+	z-index: 10;
+}
+.salut-warper li.prev {
+	-webkit-transform: translate3d(-100%, 0, 0);
+	transform: translate3d(-100%, 0, 0);
 }

@@ -1,3 +1,25 @@
+#header {
+    text-align: center;
+    line-height: 50px;
+    color: #FFF;
+    background-color: #DEB1B1;
+}
+#footer {
+    font-size: 18px;
+    display: -webkit-box;
+}
+#footer a {
+    display: block;
+    display: block;
+    width: 50%;
+    text-align: center;
+    line-height: 50px;
+    color: #000;
+}
+#footer a.mui-active {
+        background-color: #8BB78E;
+        color:#FFF;
+}
 #home ul {
 	margin-top: 10px;
 }
@@ -396,4 +418,18 @@
 #F {
     height: 50%;
     width: 100%;
+}
+.salut-btn {
+    margin: 10px;
+    display: block;
+    width: 50%;
+    text-align: center;
+    height: 30px;
+    padding: 5px 20px;
+    line-height: 30px;
+    border: 1px solid #19a39e;
+    border-radius: 5px;
+}
+.salut-btn:active{
+    background-color: #A4C3C2;
 }
