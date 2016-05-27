@@ -15,6 +15,7 @@
     text-align: center;
     line-height: 50px;
     color: #000;
+    background-color: #FFF;
 }
 #footer a.mui-active {
         background-color: #8BB78E;
@@ -429,6 +430,9 @@
     line-height: 30px;
     border: 1px solid #19a39e;
     border-radius: 5px;
+    background-color: #E06262;
+    color: #fff;
+    font-size: 16px;
 }
 .salut-btn:active{
     background-color: #A4C3C2;

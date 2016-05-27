@@ -12,11 +12,11 @@ define(['base'], function(_PRO_) {
 		//本界面的数据 数组下标为参数顺序值 “|”号前面hash值后面传入参数的索引，后面是默认值例如地址栏写入 #B/param1/param2  ==> url 会变成：.....way=param1&aee=param2
 		url: 'http://' + IP + ':8800/?way=[0|b]&aee=[1|c]',
 		//界面标题 + 无需赘述
-		title: 'b界面',
+		title: 'B界面',
 		//配置该页面的导航条
 		nav: ['Header'],
 		//该界面导航默认数据
-		navInfo: {active: 'Center'},
+		navInfo: {iconRight: 'share'},
 		//路由名称 +无需赘述，必须与类名一致，大写开头。如果没有配置路由名称，则该界面没有加入路由规则当中去。一般是弹出界面无需配置此项
 		route: 'B(/:param1)(/:param2)',
 		view: {

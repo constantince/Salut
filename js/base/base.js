@@ -66,9 +66,11 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 						})
 						return
 					} else {
-						$('#pageWindow > .navigate').addClass('fixednav')
+							// Backbone.Events.once('hideNavigate', function() {
+								$('.navigate').addClass('fixednav')
+							// });	
 					}
-				}
+			}
 				//非初次载入
 			if (!$.isEmptyObject(BackbonePage[n])) {
 				if (defaults.applyChange === false) {
@@ -513,7 +515,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 				_createHtml: {
 					navigate: function(cls) {
 						var elName = this.options.name;
-						pageWinow.append('<' + elName + ' class="mui-bar mui-bar-nav fixednav ' + cls + '" id="' + this.options.name + '"></' + elName + '>'.trim());
+						$('body').append('<' + elName + ' class="mui-bar mui-bar-nav fixednav ' + cls + '" id="' + this.options.name + '"></' + elName + '>'.trim());
 					},
 					mask: function(cls) {
 						pageWinow.append('<div class="mask" id=' + this.options.name + '></div>'.trim());
