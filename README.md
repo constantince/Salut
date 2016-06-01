@@ -63,7 +63,7 @@ var page = PDW.createPage();
 >*为必填参数   +为可选
 >{
 >>name: 'a' 视图名称 *
->>title: 'A界面' +
+title: 'A界面' +
 >>applyChange: false + 重新切换到该视图时是否刷新当前界面数据 默认true
 >>type: mask + 该视图的类型 总共有以下几种类型 [normal, mask, navigate, child], 默认normal
 >>parent: 'x' + 视图的父级视图id，只有当type为child时需要指定parent 
