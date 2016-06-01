@@ -20,4 +20,5 @@ define(['base'], function(_PRO_){
       }
     }
   })
+  return _exprots;
 });

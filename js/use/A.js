@@ -40,17 +40,7 @@ define(['base'], function(_PRO_) {
 				 这个前提是tap目标选择器和父级一样，因为子界面在父界面之下，父界面的方法会捕获子界面方法
 				*/
 				'tap .J-async-module->goPageB': function(e) {
-					//A:模块名称 C:路由名称 function.....:回掉函数。this上下文指向B文件中的的B界面对象
-					router.myNavigate('B/b/n', function(){
-
-							// this.children['h'].reloadView({
-							// 	word: 'I AM OTERHS INFOMATION FORM PAGE A'
-							// });
-							// this.children['k'].reloadView({
-							// 	word: 'IT IS WORK'
-							// });
-							// this.reloadAllChildren({word:'all reload'});
-					});
+					router.myNavigate('B');
 				},
 				'tap .J-refresh->refreshPage': refreshPage,
 				'tap .J-changeNav->changeNavA': function() {
