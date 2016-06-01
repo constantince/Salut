@@ -1,0 +1,19 @@
+<!-- F界面 -->
+<script type="text/template" id="tplf">
+  <div class="child" name="p"></div>
+  <p class="sault-description">一个界面可以分为很多部分，每个部分用createPage创建视图。可以对每个子界面刷新等操作。</p>
+  <div class="child" name="y"></div>
+  <p class="sault-description">this.reloadAllChildren({word:'all reload'}); 方法可以刷新所有子界面，并为它们统一传递word值</p>
+  <a class="salut-btn J-refresh-p">刷新P子界面</a>
+  <a class="salut-btn J-refresh-y">刷新Y子界面</a>
+  <a class="salut-btn J-refresh-all">刷新两个界面</a>
+</script>
+<!-- 子界面P -->
+<script type="text/template" id="tplp">
+  <h3><%=message%></h3>
+</script>
+
+<!-- 子界面Y -->
+<script type="text/template" id="tply">
+  <h3><%=word%></h3>
+</script>

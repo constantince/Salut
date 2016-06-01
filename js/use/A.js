@@ -13,7 +13,7 @@ define(['base'], function(_PRO_) {
 		name: 'a',
 		//界面标题 + 无需赘述
 		title: 'A界面',
-		//切换界面时是否刷新本界面
+		//切换到此界面时是否重新获取数据，刷新本界面
 		applyChange: false,
 		//路由名称 +无需赘述，如果没有配置路由名称，则该界面没有加入路由规则当中去。一般是弹出界面无需配置此项
 		route: 'A',
@@ -87,12 +87,8 @@ define(['base'], function(_PRO_) {
 		url: 'http://' + IP + ':8800/?way=c',
 		view: {
 			pageEvent: {
-				'tap h1->toPage': function(e) {
-					router.myNavigate('D', function() {
-						this.D.addDataToModel({
-							other: 'ALL INFROMATION FOR PAGE D FROM PAGE C'
-						})
-					});
+				'tap .J-go-c->toPageC': function(e) {
+					router.myNavigate('Z');
 				}
 			}
 		},
@@ -103,11 +99,11 @@ define(['base'], function(_PRO_) {
 		}
 	});
 	//F界面 属于弹出窗口
-	_exprots.F = PDW.createPage({
+	_exprots.M = PDW.createPage({
 		//视图名称 * 
-		name: 'f',
+		name: 'm',
 		//界面标题 + 无需赘述
-		title: 'F界面',
+		title: 'M界面',
 		//路由名称 +无需赘述，如果没有配置路由名称，则该界面没有加入路由规则当中去。一般是弹出界面无需配置此
 		//声明类型
 		type: 'mask',
@@ -117,14 +113,17 @@ define(['base'], function(_PRO_) {
 			pageEvent: {
 				'tap h1->toPage': function(e) {
 					refreshPage(e);
-					_exprots.F.hide();
+					_exprots.M.hide();
+				},
+				'tap  ->close': function() {
+					_exprots.M.hide();
 				}
 			}
 		},
 		model: {
 			defaults: {
 				say: 'hello',
-				name: 'C',
+				name: 'M',
 				other: 'ccccccc'
 			}
 		}
@@ -135,8 +134,8 @@ define(['base'], function(_PRO_) {
 		name: 'g',
 		//界面标题 + 无需赘述
 		title: 'G界面',
-		//声明类型[normal, mask, navigate, refresh]
-		type: 'refresh',
+		//声明类型[normal, mask, navigate, child]
+		type: 'child',
 		//声明父级节点的id
 		parent: 'a',
 		view: {
@@ -160,8 +159,8 @@ define(['base'], function(_PRO_) {
 		name: 'i',
 		//界面标题 + 无需赘述
 		title: 'i界面',
-		//声明类型[normal, mask, navigate, refresh]
-		type: 'refresh',
+		//声明类型[normal, mask, navigate, child]
+		type: 'child',
 		//声明父级节点的id
 		parent: 'a',
 		view: {

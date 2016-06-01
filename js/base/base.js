@@ -66,11 +66,11 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 						})
 						return
 					} else {
-							// Backbone.Events.once('hideNavigate', function() {
-								$('.navigate').addClass('fixednav')
+						// Backbone.Events.once('hideNavigate', function() {
+						$('.navigate').addClass('fixednav')
 							// });	
 					}
-			}
+				}
 				//非初次载入
 			if (!$.isEmptyObject(BackbonePage[n])) {
 				if (defaults.applyChange === false) {
@@ -87,7 +87,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 							_callback()
 						},
 						error: function(xhr) {
-							console.error('ajax repsonse wrong:' + xhr)
+							console.error('ajax response wrong:' + xhr)
 						}
 					})
 				} else {
@@ -114,7 +114,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 					BackbonePage[n] = new(_getBackboneView(n, defaults.view))({
 						model: _model
 					});
-					_callback()
+					_callback();
 				} else {
 					_ajax({
 						url: defaults.url,
@@ -126,7 +126,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 							BackbonePage[n] = new(_getBackboneView(n, defaults.view))({
 								model: _model
 							});
-							_callback()
+							_callback();
 						},
 						error: function(xhr) {
 							console.error('ajax repsonse wrong:' + xhr)
@@ -142,39 +142,6 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 			var model = Backbone.Model.extend(defaults);
 			return model
 		}
-		//如果有需要滑动的 或者类似幻灯片效果元素，启用swiper插件，该配置用法请查看官方文档。
-		/*
-		function _implement(list) {
-			if (list.length > 0) {
-				var type = list.attr('type');
-				var cls = list.attr('swiper');
-				require(['core/Swiper'],
-					function(S) {
-						var options;
-						if (type == 'banner') {
-							options = {
-								pagination: '.swiper-pagination',
-								loop: true,
-								grabCursor: true,
-								paginationClickable: true
-							}
-						} else {
-							options = {
-								freeMode: true,
-								slidesPerView: 'auto',
-								freeModeFluid: true,
-								direction: 'vertical',
-							}
-						}
-						var tempSwipeVar = new S(cls, options);
-						setTimeout(function() {
-								tempSwipeVar.update()
-							},
-							100)
-					})
-			}
-		}
-		*/
 		//扩展backbone View对象 存入对象栈中
 		function _getBackboneView(n, d) {
 			var view;
@@ -187,7 +154,9 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 				render: function(u) {
 					//渲染之前的处理方法
 					this.beforeRender && this.beforeRender.call(this);
-					this.$el.html(this.template(this.model.toJSON()));
+					var $el = this.$el;
+					var parentBox = !!$el.find('.render').length ? $el.find('.render') : $el;
+					parentBox.html(this.template(this.model.toJSON()));
 					// _implement(list);
 					//渲染之后的处理方法
 					this.afterRender && this.afterRender.call(this);
@@ -199,12 +168,21 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 				//下拉刷新
 				createScrollFresh: function() {
 					var el = this.$el;
-					if (el.find('.need-scroll-fresh').length && el.find('.need-scroll-fresh-box').length) {
-						el.find('.need-scroll-fresh').on('scroll', this.scroll);
+					var me = this;
+					//need-scroll-fresh : 滚动框的父级元素 need-scroll-fresh-box: 需要滚动的元素
+					if (el.find('.salut-need-scroll-fresh').length) {
+						el.find('.salut-need-scroll-fresh').on('scroll', function(e) {
+							var el = e.currentTarget;
+							var $el = $(el);
+							var luocha = el.scrollHeight - el.clientHeight - 1;
+							if ($el.scrollTop() > luocha) {
+								me.scroll();
+							}
+						});
 					}
 				},
 				createSlider: function() {
-					if(this.$el.find('.salut-warper').length) {
+					if (this.$el.find('.salut-warper').length) {
 						scroll('.salut-warper');
 					}
 				},
@@ -232,7 +210,6 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 							_self.render();
 							//加载子元素
 							Backbone.Events.trigger(n + '-loadChildElement');
-
 							//如果有子元素回调方法则执行之
 							Backbone.Events.trigger('jumpback');
 						}
@@ -290,10 +267,10 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 
 			switch (direction) {
 				case 'left':
-					// el[0].style.cssText = '-webkit-transform: translate3d(100%, 0, 0);';
 					el.css({
 						'display': 'block',
-						'transform': 'translate3d(' + width + 'px, 0, 0)'
+						'transform': 'translate3d(' + width + 'px, 0, 0)',
+						'-webkit-transform': 'translate3d(' + width + 'px, 0, 0)'
 					});
 					translate = 'translate3d(' + ((100 - distance) * width / 100) + 'px, 0, 0); width:' + distance + '%;';
 					break;
@@ -305,7 +282,6 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 					translate = 'translate3d(0, 0, 0); width:' + distance + '%;';
 					break;
 				case 'top':
-					// el[0].style.cssText = '-webkit-transform: translate3d(0, 100%, 0);';
 					el.css({
 						'display': 'block',
 						'transform': 'translate3d(0, ' + height + 'px, 0);'
@@ -313,7 +289,6 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 					translate = 'translate3d(0, ' + ((100 - distance) * height / 100) + 'px, 0); height:' + distance + '%';
 					break;
 				case 'bottom':
-					// el[0].style.cssText = '-webkit-transform: translate3d(0, -100%, 0);';
 					el.css({
 						'display': 'block',
 						'transform': 'translate3d(0, -' + height + 'px, 0);'
@@ -328,7 +303,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 			}
 			el.addClass('page_show');
 			setTimeout(function() {
-				var css = 'z-index:1000; -webkit-transform: ' + translate;
+				var css = 'display: block; z-index:1000; -webkit-transform: ' + translate;
 				el[0].style.cssText = css
 			}, 17);
 			var t = setTimeout(function() {
@@ -337,7 +312,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 				}
 				defaults.callback.call(null);
 				clearTimeout(t)
-			}, defaults.delay + 50)
+			}, defaults.delay + 50);
 		}
 		//自定义封装的ajax方法
 		function _ajax(o) {
@@ -345,6 +320,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 				return alert('请输入请求地址！')
 			}
 			var tempSuccess = o.success;
+			//此处根据需求 的状态决定跳转的路线
 			o.success = function(r) {
 				if (r.status == 0) {
 					(o.wrong && o.wrong(r)) || alert(r.data);
@@ -400,7 +376,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 				case 'normal':
 					_addViewOrder(n);
 					ActiveRoute = n;
-					$('#pageWindow+.background').addClass('g-d-n');
+					// $('#pageWindow+.background').addClass('g-d-n');
 					$('#pageWindow>.mask').hide().removeClass('move');
 					//界面跳转的方向
 					direction = direction || _orderChange(n, PDW.getPreView());
@@ -423,14 +399,15 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 						distance = 0;
 						setTimeout(function() {
 							page.removeClass('showed');
-							$('#pageWindow+.background').removeClass('cover-' + n).addClass('g-d-n').css('z-index', 0);
+							page.hide();
 						}, C.maskTransformDelay);
 					} else {
 						page.addClass('showed');
-						$('#pageWindow+.background').addClass('cover-' + n).removeClass('g-d-n').css('z-index', 1001);
+						page.show();
 					}
+					
 					animation({
-						el: page,
+						el: page.find('.mask-content'),
 						direction: direction,
 						distance: distance,
 						type: type
@@ -515,12 +492,12 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 				_createHtml: {
 					navigate: function(cls) {
 						var elName = this.options.name;
-						$('body').append('<' + elName + ' class="mui-bar mui-bar-nav fixednav ' + cls + '" id="' + this.options.name + '"></' + elName + '>'.trim());
+						pageWinow.append('<' + elName + ' class="mui-bar mui-bar-nav fixednav ' + cls + '" id="' + this.options.name + '"></' + elName + '>'.trim());
 					},
 					mask: function(cls) {
-						pageWinow.append('<div class="mask" id=' + this.options.name + '></div>'.trim());
+						pageWinow.append('<div class="mask" id=' + this.options.name + '><div class="mask-content render"></div></div>'.trim());
 					},
-					refresh: function() {
+					child: function() {
 						var options = this.options;
 						var name = options.name;
 						//父级元素的id
@@ -528,13 +505,13 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 						//声明并且返回父模块，
 						var parentClass = this._bindParent();
 						//重新定义el元素
-						options.view.el = '#' + parent + ' .refresh-' + name;
+						options.view.el = '#' + parent + ' .child-' + name;
 						//由于主界面未渲染，因此容器不存在，再次注册方法 为渲染后界面所用
 						Backbone.Events.once(parent + '-loadChildElement', function() {
 							//将子元素的html内容添加到父容器中去
-							$('#' + parent).find('div.refresh[name~="' + name + '"]').html('<div class="refresh-' + name + '"></div>'.trim())
+							$('#' + parent).find('div.child[name~="' + name + '"]').html('<div class="child-' + name + '"></div>'.trim())
 								//建立backbone界面和数据模型。---任何非normal的界面，没有router配置项 无法调用loadpage渲染，必须手动调用
-							_loadPage(options);
+							this.view = _loadPage(options);
 							//上一步骤建立了数据模块后绑定子模块
 							this._bindChildren(parentClass);
 						}, this);
@@ -544,7 +521,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 						for (var i = 0; i < this.options.nav.length; i++) {
 							cls += ' hasnav-' + this.options.nav[i].toLocaleLowerCase()
 						}
-						pageWinow.append('<div class="page ' + cls + '" id="' + this.options.name + '"></div>'.trim())
+						pageWinow.append('<div class="page ' + cls + '" id="' + this.options.name + '"><div class="content-box render"></div></div>'.trim())
 					}
 				},
 				//动态创建界面最外层元素
@@ -656,7 +633,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 							url: u
 						}
 					}
-					_loadPage($.extend({}, this.options, s));
+					this.view = _loadPage($.extend({}, this.options, s));
 				},
 				//创建界面模型
 				loadPageModel: function(s) {
@@ -905,7 +882,6 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 						Backbone.Events.once('jumpback', jumpback, exports[newroute]);
 						return;
 					}
-
 				})
 			}
 		}
@@ -1076,8 +1052,7 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 	})(window);
 	var _PRO_ = {
 		PDW: PDW,
-		Router: Router,
-		// Event: Event
+		Router: Router
 	}
 	return _PRO_
 });

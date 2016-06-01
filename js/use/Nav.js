@@ -28,13 +28,6 @@ define(['base'], function(_PRO_) {
 					tar = tar[0].nodeName === 'A'? tar : tar.parent();
 					var propeites = tar.data('n');
 					var path = propeites.split('-');
-					//params1:模块名称(A), params2:路由名称(C), params3: function.....:回掉函数。this上下文指向模块A
-					router.myNavigate(path[0], path[1], function(){
-						// var title = this.options.title;
-						// _exprots.Top.reloadView({name: title});
-						// tar.parent().find('a.mui-active').removeClass('mui-active');
-						// tar.addClass('mui-active');
-					});
 				}
 			}
 		},
@@ -76,11 +69,15 @@ define(['base'], function(_PRO_) {
 				//栅格图标
 				'tap a.icon-lattice->slideLeft': function() {
 					//显示左侧框
-					PDW.Observer.get('f').show();
+					PDW.Observer.get('m').show();
 				},
 				//分享图标
 				'tap a.icon-share->share': function() {
 
+				},
+				//个人中心图标
+				'tap a.icon-me->me': function() {
+					router.myNavigate('F');
 				}
 			}
 		},

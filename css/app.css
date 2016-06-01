@@ -18,18 +18,18 @@
     background-color: #FFF;
 }
 #footer a.mui-active {
-        background-color: #8BB78E;
-        color:#FFF;
+    background-color: #8BB78E;
+    color: #FFF;
 }
 #home ul {
-	margin-top: 10px;
+    margin-top: 10px;
 }
 #home ul li .headimg {
     border-radius: 50%;
     height: 60px;
 }
-#home ul li:active{
-	background-color: #efeff4;
+#home ul li:active {
+    background-color: #efeff4;
 }
 #home li.cell {
     display: -webkit-box;
@@ -44,39 +44,39 @@
     -webkit-box-flex: 1;
 }
 #home li div.middleinfo h5 span {
-	color: #101010;
+    color: #101010;
 }
 #home li div.middleinfo .title {
-	margin-left:10px;
+    margin-left: 10px;
 }
 #home li div.middleinfo em {
-	color: #8f8f94;
-	font-size: 14px;
+    color: #8f8f94;
+    font-size: 14px;
 }
 #information header {
-	display: -webkit-box;
-   padding: 5px 10px 0px;
+    display: -webkit-box;
+    padding: 5px 10px 0px;
 }
 #information header .imgHeader {
-	display: block;
+    display: block;
     height: 80px;
     width: 80px;
     margin-right: 10px;
 }
 #information header .info {
-	-webkit-box-flex: 1;
+    -webkit-box-flex: 1;
 }
 #information header .info p {
-	margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 #information header .info p span {
-	margin-right: 5px;
+    margin-right: 5px;
 }
 #information .list {
-	margin-top: 5px;
+    margin-top: 5px;
 }
-#information .list .order li{
-	height: 50px;
+#information .list .order li {
+    height: 50px;
     font-size: 1.5rem;
     padding: 0 10px;
     border-bottom: 1px solid #E0E0E0;
@@ -84,7 +84,7 @@
     display: -webkit-box;
     -webkit-box-align: center;
 }
-#information .list .order li span{
+#information .list .order li span {
     display: block;
     line-height: 25px;
     height: 25px;
@@ -92,114 +92,114 @@
     text-align: left;
     color: #000000;
 }
-#information .list .left{
-	height: inherit;
+#information .list .left {
+    height: inherit;
     -webkit-box-flex: 1;
     text-align: left;
 }
 #information .servicearea {
-	padding-left: 10px;
+    padding-left: 10px;
     border-bottom: 1px solid #d5d5d5;
 }
-#information .list .order button[class*="mui"]{
+#information .list .order button[class*="mui"] {
     font-size: 1.2rem;
     border: 0;
     width: 80px;
     border-radius: 0;
 }
 #information .list .opposition {
-	padding: 0 10px;
+    padding: 0 10px;
 }
 #information .list .opposition li {
-	padding: 5px 10px 0px;
+    padding: 5px 10px 0px;
     border-bottom: 1px solid #d5d5d5;
     background-color: #E8E8E8;
-	margin-bottom: 5px;
+    margin-bottom: 5px;
 }
-#information .list .opposition li p{
-	margin: 0;
+#information .list .opposition li p {
+    margin: 0;
     color: #101010;
 }
 #information .list .opposition li .title {
-	display: -webkit-box;
+    display: -webkit-box;
     -webkit-box-align: center;
 }
 #information .list .opposition li  .left {
-	height: inherit;
+    height: inherit;
     -webkit-box-flex: 1;
     text-align: left;
 }
-#information .list .opposition li .mui-icon-star{
-	font-size: 2rem;
+#information .list .opposition li .mui-icon-star {
+    font-size: 2rem;
 }
-#information .list .opposition li .juder{
-	text-align: left;
+#information .list .opposition li .juder {
+    text-align: left;
     font-size: 1.2rem;
 }
-#information .mybtn, #fillOrder .mybtn{
-	padding: 10px;
+#information .mybtn, #fillOrder .mybtn {
+    padding: 10px;
     border-radius: 0;
     position: fixed;
     bottom: 0;
     margin: 0;
 }
 #fillOrder {
-	padding-bottom: 50px;
+    padding-bottom: 50px;
     overflow-y: scroll;
 }
 #fillOrder > header {
-	margin: 15px 0;
-	font-size:1.4rem;
+    margin: 15px 0;
+    font-size: 1.4rem;
 }
 #fillOrder > header .myli {
-	padding-right:0;
+    padding-right: 0;
 }
 #fillOrder .mname {
-	font-size: 1.5rem;
+    font-size: 1.5rem;
     color: #0C4186;
     font-weight: bold;
 }
 #fillOrder p.supplementary {
-	padding: 0 16px;
+    padding: 0 16px;
     font-size: 1.2rem;
     margin-top: 5px;
     color: #F95B77;
 }
 #fillOrder .descriptionSimple {
-	margin: 10px 5px 0;
+    margin: 10px 5px 0;
 }
 #discriptionTextarea {
-	margin-bottom: 0;
+    margin-bottom: 0;
 }
 #submitSuccess header {
-	text-align: center;
+    text-align: center;
     font-size: 21px;
     margin-top: 15px;
 }
-#submitSuccess header span{
-	font-size: 1.85rem;
+#submitSuccess header span {
+    font-size: 1.85rem;
 }
 #submitSuccess .content {
-	padding: 10px 15px;
+    padding: 10px 15px;
     margin-top: 20px;
     border-top: 1px solid #d5d5d5;
     border-bottom: 1px solid #d5d5d5;
 }
 #submitSuccess .content p.name {
-	color: #101010;
-	font-size: 1.4rem;
+    color: #101010;
+    font-size: 1.4rem;
 }
 #submitSuccess .tip {
-	padding: 5px 15px;
+    padding: 5px 15px;
     font-size: 1.3rem;
     color: #F994A6;
 }
-#news .newsUl{
-	padding: 10px;
+#news .newsUl {
+    padding: 10px;
     overflow: scroll;
     height: 100%;
 }
-#news .newsLi{
+#news .newsLi {
     margin-top: 10px;
     position: relative;
     display: block;
@@ -210,136 +210,134 @@
     background-color: #caebfb;
     color: #555;
     border: 1px solid #eee;
-	font-size: 1.4rem;
+    font-size: 1.4rem;
 }
 #news .newsLi[class~="message"] {
-	background-color: #23abf0;
-	color:#fff;
+    background-color: #23abf0;
+    color: #fff;
 }
 #news .newsLi p {
-	color: #fff;
+    color: #fff;
 }
 #news .newsLi a {
-	font-family:bold;
-	font-size: 1.5rem;
-	color: #101010;
-	text-decoration: underline;
+    font-family: bold;
+    font-size: 1.5rem;
+    color: #101010;
+    text-decoration: underline;
 }
 #news .newsLi .cornered {
-	position: absolute;
+    position: absolute;
     border-right: 10px solid #4cd964;
     border-bottom: 10px solid transparent;
     left: -10px;
     top: 0;
 }
-#news .newsUl .time{
-	width: 100%;
-	display: block;
-	text-align: right;
+#news .newsUl .time {
+    width: 100%;
+    display: block;
+    text-align: right;
 }
-#news .newsUl .hello{
-	text-align:right;
+#news .newsUl .hello {
+    text-align: right;
 }
 #myOrder {
-	overflow: scroll;
+    overflow: scroll;
 }
 #myOrder .infoBox {
-	background-color: #EEE;
+    background-color: #EEE;
     padding: 5px;
 }
 #myOrder .infoForm {
-	margin-top: 10px;
+    margin-top: 10px;
 }
 #login > div {
-	height: 100%;
+    height: 100%;
 }
-#register .code, #login .code  {
-	width: 80px;
+#register .code, #login .code {
+    width: 80px;
     float: left;
     display: inline-block;
 }
-#register .getcodebtn, #login .getcodebtn  {
-	display: inline-block;
+#register .getcodebtn, #login .getcodebtn {
+    display: inline-block;
     float: right;
     width: 100px;
     margin-right: 10px;
     border-radius: 0;
-	height:inherit;
+    height: inherit;
 }
 #center .mui-scroll {
-	padding-bottom: 50px;
+    padding-bottom: 50px;
     height: 100%;
     overflow: scroll;
 }
 #news li .mui-btn {
-	margin: 0;
+    margin: 0;
     height: 25px;
     line-height: 25px;
     font-size: 1.2rem;
     padding: 0 10px;
 }
 #myOrder .mui-collapse-content {
-	background-color: initial;
+    background-color: initial;
 }
 #makeFriends {
-	
 }
-#makeFriends ul li.list{
-	display: -webkit-box;
+#makeFriends ul li.list {
+    display: -webkit-box;
 }
-#makeFriends li.list img{
-	height:100%;
-	width: 100%;
+#makeFriends li.list img {
+    height: 100%;
+    width: 100%;
 }
-#makeFriends li.list a{
-	display: block;
+#makeFriends li.list a {
+    display: block;
     -webkit-box-flex: 1;
     border: 1px solid #d9d9d9;
     margin: 5px;
 }
 #makeFriends li.list .content {
-	padding: 5px;
+    padding: 5px;
 }
-#makeFriends li.list a .box1{
-	display: -webkit-box;
+#makeFriends li.list a .box1 {
+    display: -webkit-box;
 }
-#makeFriends li.list a .box2{
-	font-size: 1.2rem;
+#makeFriends li.list a .box2 {
+    font-size: 1.2rem;
 }
-#makeFriends li.list .box1 span{
-	display: block;
+#makeFriends li.list .box1 span {
+    display: block;
     -webkit-box-flex: 1;
     text-align: left;
     color: #101010;
 }
 #personel {
-	
 }
-#personel .banner{
-	width: 100%;
+#personel .banner {
+    width: 100%;
 }
-#personel .banner img{
-	width: 100%;
+#personel .banner img {
+    width: 100%;
 }
 #personel .content {
-	margin-top: 10px;
+    margin-top: 10px;
     padding: 10px;
 }
-#personel .content p{
+#personel .content p {
     min-width: 50%;
     float: left;
     max-width: 100%;
 }
-#personel .content p em.name{
-	margin-right: 10px;
+#personel .content p em.name {
+    margin-right: 10px;
 }
 #personel footer {
-	display: -webkit-box;
+    display: -webkit-box;
     clear: both;
     padding: 0 10px;
 }
 #personel footer button {
-	-webkit-box-flex: 1;
+    -webkit-box-flex: 1;
     border-radius: 0;
     margin-left: 10px;
     height: 30px;
@@ -347,30 +345,31 @@
     line-height: 30px;
     padding: 0;
 }
+
 /* 滑动效果的父级元素统一设置 */
 #publishPerson, #news, #center {
-	overflow:hidden;
+    overflow: hidden;
 }
 #publishPerson>div {
-	overflow:scroll;
-	height:100%;
+    overflow: scroll;
+    height: 100%;
 }
-#publishPerson input{
-	margin-bottom: 10px;
+#publishPerson input {
+    margin-bottom: 10px;
 }
 #publishPerson .submit {
-	margin-top: 20px;
-	margin-bottom: 10px;
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
-#publishPerson p{
-	padding-top: 0;
+#publishPerson p {
+    padding-top: 0;
 }
 #publishPerson .feedback input {
-	border: 1px solid #3bb4f2;
-	border-radius:0;
+    border: 1px solid #3bb4f2;
+    border-radius: 0;
 }
 #publishPerson .line {
-	height: 40px;
+    height: 40px;
     background-color: #fff;
     line-height: 40px;
     font-size: 1.6rem;
@@ -379,30 +378,30 @@
     margin-bottom: 10px;
 }
 #publishPerson .feedback input[type="radio"] {
-	border: 0;
-	position:initial;
-	margin-bottom:0;
+    border: 0;
+    position: initial;
+    margin-bottom: 0;
 }
-#publishPerson .feedback input[type="radio"]:before{
-	font-size:2.2rem;
+#publishPerson .feedback input[type="radio"]:before {
+    font-size: 2.2rem;
 }
 #publishPerson .radiobox {
-	background-color: #fff;
+    background-color: #fff;
     padding: 5px 10px 0px 10px;
-	font-size:1.6rem;
+    font-size: 1.6rem;
 }
 #publishPerson .radiobox .woman {
-	margin-left: 30px;
+    margin-left: 30px;
 }
 #publishPerson .feedback input[type="checkbox"] {
-	border: 0;
-	position: initial;
-	margin: 0;
+    border: 0;
+    position: initial;
+    margin: 0;
 }
 #publishPerson select {
-	margin-bottom: 5px;
+    margin-bottom: 5px;
 }
-#publishPerson .needagree{
+#publishPerson .needagree {
     position: initial;
     display: -webkit-box;
     line-height: 35px;
@@ -411,10 +410,10 @@
     color: #8f8f94;
 }
 #publishPerson .needagree div.discription {
-	font-size: 1.2rem;
+    font-size: 1.2rem;
 }
 #publishPerson .feedback input[type="checkbox"]:before {
-	font-size:2.2rem;
+    font-size: 2.2rem;
 }
 #F {
     height: 50%;
@@ -434,6 +433,55 @@
     color: #fff;
     font-size: 16px;
 }
-.salut-btn:active{
+.salut-btn:active {
     background-color: #A4C3C2;
+}
+#b header {
+    display: -webkit-box;
+    height: 40px;
+    font-size: 16px;
+    background-color: #FFF;
+    color: #000;
+    box-shadow: 0px 1px 1px #565656;
+}
+#b header div.active {
+    background-color: #19a39e;
+    color: #FFF;
+    font-weight: bold;
+}
+#b header div {
+    -webkit-box-flex: 1;
+    text-align: center;
+    height: inherit;
+    line-height: 40px;
+    box-sizing: border-box;
+}
+#b .content li {
+    height: 50px;
+    line-height: 50px;
+    padding: 0 20px;
+    border-bottom: 1px solid #E2E2E2;
+    font-size: 18px;  
+}
+#b .content-box {
+    height: 100%;
+    overflow: hidden;
+}
+#b aside {
+    height: inherit;
+    overflow: hidden;
+}
+#b aside .content {
+    height: inherit;
+    overflow: hidden;
+}
+#b aside .content div[class*="child"] {
+    height: inherit;
+    overflow: hidden;
+}
+#b aside .content div[class*="child"] ul {
+    padding-bottom: 50px;
+}
+#pageWindow #b {
+    overflow-y: hidden;
 }

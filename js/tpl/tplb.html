@@ -1,19 +1,39 @@
 <!-- 我的订单 -->
 <script type="text/template" id="tplb">
-	<h1><%=name%></h1>
-	<div class="refresh" name="k"></div>
+	<header>
+		<div class="tab-a left tab active" data-type="left">左侧</div>
+		<div class="tab-b right tab" data-type="right">右侧</div>
+	</header>
+	<aside>
+		<div class="left content child" name="h">左侧导航</div>
+		<div class="right content child g-d-n" name="k">右侧导航</div>
+	</aside>
+	<!-- <h1><%=name%></h1> -->
+<!-- 	<div class="refresh" name="k"></div>
 	<button type="button" class="mui-btn mui-btn-danger g-page-btn J-refresh-A">我是按钮</button>
-	<div class="refresh" name="h"></div>
+	<div class="refresh" name="h"></div> -->
 </script>
 
 <!-- B界面的子界面，刷新界面 -->
 <script type="text/template" id="tplh">
-	<h1><%=word%></h1>
+	<div class="salut-need-scroll-fresh">
+		<ul class="salut-need-scroll-fresh-box">
+			<%for(var i=0; i<list.length; i++){%>
+				<li><%=list[i].say%></li>
+			<%}%>
+		</ul>
+	</div>	
 </script>
 
 <!-- B界面的子界面，刷新界面 -->
 <script type="text/template" id="tplk">
-	<h1><%=word%></h1>
+	<div class="salut-need-scroll-fresh">
+		<ul class="need-scroll-fresh-box">
+			<%for(var i=0; i<list.length; i++){%>
+				<li><%=list[i].say%></li>
+			<%}%>
+		</ul>
+	</div>
 </script>
 
 <script type="text/template" id="tpld">

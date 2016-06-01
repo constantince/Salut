@@ -5,6 +5,29 @@ define(['base'], function(_PRO_) {
 	// PDW.Observer.add('B', function() {
 	// 	return _exprots;
 	// });
+	 //滚动条事件
+	 /*
+  var scroll = function(e) {
+    var el = e.currentTarget;
+    var $el = $(el);
+    var luocha = el.scrollHeight - el.clientHeight - 1;
+    if ($el.scrollTop() > luocha) {
+      var index = $el.data('index') || 2;
+      if (index === 'none') return;
+      PDW.ajax({
+        url: uuuu + '/activity/page?currPage=' + index + token,
+        success: function(r) {
+          if (r.pageListVo.rows.length > 0) {
+            var html = Backbone.template($('#scrollFresh').html())(r)
+            parent.find('.need-scroll-fresh-box').append(html);
+            $el.data('index', ++index);
+          } else {
+            $el.data('index', 'none');
+          }
+        }
+      })
+    }
+  };*/
 	//课程选择
 	_exprots.B = PDW.createPage({
 		//视图名称 * 
@@ -21,12 +44,15 @@ define(['base'], function(_PRO_) {
 		route: 'B(/:param1)(/:param2)',
 		view: {
 			pageEvent: {
-				'tap h1->toPage': function() {
-					router.myNavigate('C', function() {
-						this.addDataToModel({
-							other: 'ALL INFROMATION FOR PAGE D FROM PAGE C'
-						});
-					});
+				'tap .tab->tabChange': function(e) {
+					var tar = $(e.currentTarget);
+					var cls = tar.data('type');
+					var father = this.$el;
+					if(tar.hasClass('active')) return;
+					tar.parent().find('.active').removeClass('active');
+					tar.addClass('active');
+					father.find('aside .content').addClass('g-d-n');
+					father.find('aside .content.' + cls).removeClass('g-d-n');
 				},
 				'tap .J-refresh-A->refreshChild': function() {
 						_exprots.B.children['h'].reloadView({
@@ -72,12 +98,16 @@ define(['base'], function(_PRO_) {
 		//视图名称 * 
 		name: 'h',
 		//界面标题 + 无需赘述
-		title: 'H界面',
-		//声明类型[normal, mask, navigate, refresh]
-		type: 'refresh',
+		// title: 'H界面',
+		//声明类型[normal, mask, navigate, child]
+		type: 'child',
+		url: 'http://' + IP + ':8800/?way=h',
 		//声明父级节点的id
 		parent: 'b',
 		view: {
+			scroll: function() {
+				console.log('loading.........');
+			},
 			//如果是刷新界面 需要配置该选项
 			pageEvent: {
 				'tap h1->toPage': function(e) {
@@ -98,11 +128,17 @@ define(['base'], function(_PRO_) {
 		name: 'k',
 		//界面标题 + 无需赘述
 		title: 'K界面',
-		//声明类型[normal, mask, navigate, refresh]
-		type: 'refresh',
+		//声明类型[normal, mask, navigate, child]
+		type: 'child',
+		url: 'http://' + IP + ':8800/?way=h',
 		//声明父级节点的id
 		parent: 'b',
+
 		view: {
+			//在初始化的时候添加规定的class，可以出现滚动效果，scroll是滑倒底部的回调函数。
+			scroll: function() {
+				console.log('loading.........');
+			},
 			//如果是刷新界面 需要配置该选项
 			pageEvent: {
 				'tap h1->toPage': function(e) {
