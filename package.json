@@ -1,0 +1,20 @@
+{
+  "name": "Crystal",
+  "version": "4.1.0",
+  "description": "weicanting",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "~0.4.0",
+    "grunt-contrib-clean": "*",
+    "grunt-contrib-concat": "*",
+    "grunt-contrib-copy": "*",
+    "grunt-contrib-cssmin": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-requirejs": "^0.4.4",
+    "grunt-contrib-uglify": "~0.1.0",
+    "grunt-strip": "*"
+  },
+  "dependencies": {
+    "express": "*"
+  }
+}

@@ -582,7 +582,6 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 					} else {
 						_updateModel(this.options.name, d);
 					}
-
 				},
 				//一次性刷新所有子界面
 				reloadAllChildren: function(d) {

@@ -160,7 +160,7 @@
         document.getElementsByClassName('address-list')[0].innerHTML = html;
     }
     //为地址栏添加点击事件
-    document.getElementsByClassName('address-list')[0].addEventListener('click', function(e) {
+    document.getElementsByClassName('address-list')[0].addEventListener('touchend', function(e) {
         window.parent.PB.communicateMap(e.target);
     });
     
