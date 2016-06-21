@@ -1,4 +1,4 @@
-define(['base'], function(_PRO_) {
+define(['salut'], function(_PRO_) {
 	//全局依赖变量pdw:创建项目界面模块 e: 公共事件函数 router:路由模块
 	var PDW = _PRO_.PDW, router = _PRO_.Router, _exprots = {};
 	//定义一个事件公共方法

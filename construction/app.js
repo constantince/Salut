@@ -3,7 +3,7 @@ require.config({
 	baseUrl: 'js/',
 	urlArgs:'version=1.0',
 	paths: {
-		base: 'base/base',
+		salut: 'base/salut',
 		config: 'Config'
 	}
 });

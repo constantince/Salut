@@ -1,4 +1,4 @@
-define(['base'], function(_PRO_){
+define(['salut'], function(_PRO_){
   var PDW = _PRO_.PDW, router = _PRO_.Router, _exprots = {};
 
   _exprots.Z = PDW.createPage({
