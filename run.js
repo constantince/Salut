@@ -3,13 +3,13 @@ var http = require('http'),
     path = require('path'),
     fs = require('fs');
 var mimeTypes = {
-    "html": "text/html",
-    "jpeg": "image/jpeg",
-    "jpg": "image/jpeg",
-    "png": "image/png",
-    "js": "text/javascript",
-    "css": "text/css"};
-
+  "html": "text/html",
+  "jpeg": "image/jpeg",
+  "jpg": "image/jpeg",
+  "png": "image/png",
+  "js": "text/javascript",
+  "css": "text/css"
+};
 http.createServer(function(req, res) {
   var uri = url.parse(req.url).pathname;
   var filename = path.join(process.cwd(), unescape(uri));
@@ -21,9 +21,7 @@ http.createServer(function(req, res) {
     res.writeHead(404, {'Content-Type': 'text/plain'});
     res.write('404 Not Found\n');
     res.end();
-    return;
   }
-
 
   if (stats.isFile()) {
     // path exists, is a file
@@ -45,7 +43,6 @@ http.createServer(function(req, res) {
     res.write('500 Internal server error\n');
     res.end();
   }
+}).listen(8801);
 
-}).listen(8888);
-
-console.log("server start at port 8888>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+console.log("server start...................................");

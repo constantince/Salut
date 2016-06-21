@@ -49,7 +49,7 @@ define(['base'], function(_PRO_) {
 						});
 				},
 				'tap .J-local-module->goPageC': function() {
-					router.myNavigate('C', function() {
+					router.myNavigate('C/123/789', function() {
 						this.addDataToModel({
 							message: 'hello i am a message from page A'
 						})
@@ -73,12 +73,15 @@ define(['base'], function(_PRO_) {
 		//界面标题 + 无需赘述
 		title: 'c界面',
 		//路由名称 +无需赘述，如果没有配置路由名称，则该界面没有加入路由规则当中去。一般是弹出界面无需配置此项
-		route: 'C',
+		route: 'C(/:param)(/:param1)',
 		url: 'http://' + IP + ':8800/?way=c',
 		view: {
 			pageEvent: {
 				'tap .J-go-c->toPageC': function(e) {
 					router.myNavigate('Z');
+				},
+				'tap .J-alert-param->alert': function(e) {
+					console.log(_exprots.C.routeParams);
 				}
 			}
 		},

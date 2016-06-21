@@ -608,6 +608,8 @@ define(['config', 'core/backbone'], function(C, Backbone) {
 				//分析并且注册路由
 				_normal: function(p) {
 					var defaults = this.options;
+					//将路由参数存入对象中
+					this.routeParams = p;
 					var s = (defaults.models || function() {})() || {};
 					if (defaults.url) {
 						url = (typeof defaults.url === 'function') ? defaults.url() : defaults.url;

@@ -1,33 +1,6 @@
 define(['base'], function(_PRO_) {
 	//全局依赖变量pdw:创建项目界面模块 e: 公共事件函数 router:路由模块
 	var PDW = _PRO_.PDW, router = _PRO_.Router, _exprots = {};
-	//将视图模块导入缓存中
-	// PDW.Observer.add('B', function() {
-	// 	return _exprots;
-	// });
-	 //滚动条事件
-	 /*
-  var scroll = function(e) {
-    var el = e.currentTarget;
-    var $el = $(el);
-    var luocha = el.scrollHeight - el.clientHeight - 1;
-    if ($el.scrollTop() > luocha) {
-      var index = $el.data('index') || 2;
-      if (index === 'none') return;
-      PDW.ajax({
-        url: uuuu + '/activity/page?currPage=' + index + token,
-        success: function(r) {
-          if (r.pageListVo.rows.length > 0) {
-            var html = Backbone.template($('#scrollFresh').html())(r)
-            parent.find('.need-scroll-fresh-box').append(html);
-            $el.data('index', ++index);
-          } else {
-            $el.data('index', 'none');
-          }
-        }
-      })
-    }
-  };*/
 	//课程选择
 	_exprots.B = PDW.createPage({
 		//视图名称 * 
