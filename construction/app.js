@@ -22,8 +22,8 @@ require.config({
 		for(var i in config) {
 			if(config[i].indexOf(hash) >-1 ) hash = i;
 		} 
-		hash != '' ? hash: 'A';
-
+		hash != '' ? hash: C.entrePage;
+		//首次加载文件
 		require([C.loadJsPath + hash], function(){
 			Backbone.history.start();
 		});

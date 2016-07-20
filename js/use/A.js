@@ -1,3 +1,4 @@
+//采用amd模式加载基础js
 define(['salut'], function(_PRO_) {
 	//全局依赖变量pdw:创建项目界面模块 e: 公共事件函数 router:路由模块
 	var PDW = _PRO_.PDW, router = _PRO_.Router, _exprots = {};
@@ -17,6 +18,10 @@ define(['salut'], function(_PRO_) {
 		applyChange: false,
 		//路由名称 +无需赘述，如果没有配置路由名称，则该界面没有加入路由规则当中去。一般是弹出界面无需配置此项
 		route: 'A',
+		//声明类型[normal, mask, navigate, child] 默认是normal
+		type: 'normal',
+		//如果该界面是某个界面的子界面，必须声明父级节点的id
+		//parent: 'a',
 		//界面加载需要的数据地址
 		url: 'http://' + IP + ':8800/?way=a',
 		//配置该页面的导航条
@@ -129,7 +134,7 @@ define(['salut'], function(_PRO_) {
 		title: 'G界面',
 		//声明类型[normal, mask, navigate, child]
 		type: 'child',
-		//声明父级节点的id
+		//如果该界面是某个界面的子界面，必须声明父级节点的id
 		parent: 'a',
 		view: {
 			//如果是刷新界面 需要配置该选项

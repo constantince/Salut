@@ -24,6 +24,6 @@ node run
 ##参考文档
 xxxxxxxx
 ##详细开发实例
-http://i.cnblogs.com/EditPosts.aspx?postid=5583264
+http://www.cnblogs.com/constantince
 
 

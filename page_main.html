@@ -8,21 +8,17 @@
     <meta http-equiv="Access-Control-Allow-Origin" content="*">
     <!--全屏模式-->
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <script type="text/javascript">
-        // var dpr = window.devicePixelRatio;
-        // document.querySelectorAll('meta')[0].setAttribute('content', 'initial-scale=' + 1/dpr + ', maximum-scale=' + 1/dpr + ', minimum-scale=' + 1/dpr + ', user-scalable=no');
-    </script>
-    <!-- <link rel="stylesheet" type="text/css" href="css/base.css"> -->
+    <!-- 基础样式文件 -->
     <link rel="stylesheet" type="text/css" href="css/pdw.css">
+    <!-- 业务样式文件 -->
     <link rel="stylesheet" type="text/css" href="css/app.css">
-    <!-- <link rel="stylesheet" type="text/css" href="css/mui.min.css"> -->
 	<title>Bonjour</title>
 </head>
 <body>
+<!-- 最外层容器 -->
 <div id="pageWindow"></div>
-<!-- <div class="background g-d-n"></div> -->
+<!-- 引入require 载入入口文件 -->
 <script data-main="construction/app" src="construction/require.js"></script>
-<!-- <script src="http:/172.16.0.189:8080/target/target-script-min.js#anonymous"></script> -->
 </body>
 
 </html>
