@@ -4,23 +4,21 @@
 
 [1]下载后主目录
 
-####执行安装依赖包
-```javscript
-npm install
-```
-[2]在`node`目录下打开执行以下命令
+####解压安装包到任何路径下
+
+[2]在`node`目录下执行以下命令
 
 #####启用数据服务
 ```javascript
 node json
 ```
-[3]在主目录下执行
+[3]切换到主目录下执行一下命令
 #####运行服务程序
 ```javascript
 node run
 ```
 ##在浏览器中打开
-`loaclhost:8888/page_html.html`
+`loaclhost:8888/page_main.html#A`
 
 ##详细开发实例
 http://www.cnblogs.com/constantince
