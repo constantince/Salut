@@ -14,7 +14,6 @@ http.createServer(function(req, res) {
   var uri = url.parse(req.url).pathname;
   var filename = path.join(process.cwd(), unescape(uri));
   var stats;
-
   try {
     stats = fs.lstatSync(filename); // throws if path doesn't exist
   } catch (e) {
@@ -22,7 +21,6 @@ http.createServer(function(req, res) {
     res.write('404 Not Found\n');
     res.end();
   }
-
   if (stats.isFile()) {
     // path exists, is a file
     var mimeType = mimeTypes[path.extname(filename).split(".").reverse()[0]];
@@ -43,6 +41,6 @@ http.createServer(function(req, res) {
     res.write('500 Internal server error\n');
     res.end();
   }
-}).listen(8801);
+}).listen(8888);
 
-console.log("server start at 8801...................................");
+console.log("server start at 8888...................................");

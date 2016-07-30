@@ -20,9 +20,8 @@ node json
 node run
 ```
 ##在浏览器中打开
-`loaclhost:8888/page_html#A`
-##参考文档
-xxxxxxxx
+`loaclhost:8888/page_html.html`
+
 ##详细开发实例
 http://www.cnblogs.com/constantince
 

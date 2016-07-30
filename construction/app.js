@@ -10,7 +10,7 @@ require.config({
 //require(function(base, page) {
 (function(root){
 	require(['config'], function(C){
-		console.log(C)
+		console.log(C);
 		var hash = root.location.hash.replace(/^#\/?/gi, '');
 		if(hash.indexOf('?')> -1 ) {
 			hash = hash.split('?')[0];
@@ -22,7 +22,8 @@ require.config({
 		for(var i in config) {
 			if(config[i].indexOf(hash) >-1 ) hash = i;
 		} 
-		hash != '' ? hash: C.entrePage;
+		hash = hash != '' ? hash: C.entrePage;
+		window.location.hash = hash;
 		//首次加载文件
 		require([C.loadJsPath + hash], function(){
 			Backbone.history.start();
