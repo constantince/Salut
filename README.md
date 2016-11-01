@@ -18,7 +18,7 @@ node json
 node run
 ```
 ##在浏览器中打开
-`loaclhost:8888/page_main.html#A`
+`你的ip:8888/page_main.html`
 
 ##详细开发实例
 http://www.cnblogs.com/constantince
